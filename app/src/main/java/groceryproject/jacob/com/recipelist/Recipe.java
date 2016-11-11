@@ -20,6 +20,7 @@ public class Recipe implements Parcelable {
     private String mServings;
     private String mPrepTime;
     private String mCookTime;
+    private String testString = "Testing this";
 
     private List<String> mIngredients;
     private List<String> mDirections;
