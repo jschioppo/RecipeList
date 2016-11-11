@@ -31,11 +31,11 @@ public class RecipeList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         RecipeSaver dbHelper = new RecipeSaver(this);
-        /*
+
         if(savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList("savedRecipes");
         }
-        */
+
 
         Recipe testRecipe = new Recipe();
         testRecipe.setRecipeName("Test Recipe");
@@ -86,13 +86,13 @@ public class RecipeList extends AppCompatActivity{
         });
     }
 
-    /*
+
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList("savedRecipes", recipes);
 
     }
-    */
+
 
 
     //This code is called after creating a new recipe. This is only for creating, and not editing.

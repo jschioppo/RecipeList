@@ -20,7 +20,6 @@ public class Recipe implements Parcelable {
     private String mServings;
     private String mPrepTime;
     private String mCookTime;
-    private String testString = "Testing";
 
     private List<String> mIngredients;
     private List<String> mDirections;
@@ -89,7 +88,6 @@ public class Recipe implements Parcelable {
         mDirections = directions;
     }
 
-    //TEST COMMENT
     @Override
     public int describeContents() {
         return 0;
