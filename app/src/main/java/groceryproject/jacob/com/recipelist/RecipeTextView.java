@@ -42,6 +42,7 @@ public class RecipeTextView extends AppCompatActivity {
     }
 
     protected void loadActivity(final Recipe passedRecipe){
+        //Test comment
         setContentView(R.layout.activity_recipe_text_view);
 
         mRecipeName = (TextView) findViewById(R.id.recipe_name_text_view);
