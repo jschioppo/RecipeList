@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res/android"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_border"
+    android:paddingBottom="15dp"
+    android:paddingTop="15dp"
+    android:id="@+id/recycled_item_section_view">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Recipe name"
+        android:textSize="32dp"
+        android:id="@+id/recipe_list_recycler_view_recipe_name"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_below="@id/recipe_list_recycler_view_recipe_name"
+        android:id="@+id/recipe_list_recycler_view_serving_size"
+        android:paddingBottom="5dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        android:height="36dp"
+        android:padding="8dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/add_to_grocery_list"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_list_recycler_view_serving_size"
+        android:layout_alignParentLeft="true"
+        android:textSize="24dp"
+        android:id="@+id/recipe_list_recycler_view_prep_time"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_list_recycler_view_prep_time"
+        android:textSize="24dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/recipe_list_recycler_view_cook_time"/>
+
+
+</RelativeLayout>

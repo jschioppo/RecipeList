@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background"
+    android:padding="5dp">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_recipe_button"
+        android:text="@string/edit_button"
+        android:padding="10dp"
+        android:background="@drawable/green_button_background"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_border"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/edit_recipe_button">
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="groceryproject.jacob.com.recipelist.EditRecipe"
+            android:orientation="vertical">
+
+
+
+
+            <TextView
+                android:paddingTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recipe_name_text_view"
+                android:textSize="28dp"
+                android:layout_marginBottom="10dp"
+                tools:text="Test: Name"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text = "Test: Serves X"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/serving_text_view"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text = "Test: Prep Time: X"
+                android:id="@+id/prep_time_text_view"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Test: Cook Time: X min"
+                android:layout_alignParentLeft="true"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/cook_time_text_view"
+                android:layout_marginBottom="10dp"
+                />
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ingredients"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Where Ingredients will go"
+                android:textSize="20dp"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/ingredients_text_view"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/directions"
+
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Where directions will go"
+                android:textSize="20dp"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/directions_text_view"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
