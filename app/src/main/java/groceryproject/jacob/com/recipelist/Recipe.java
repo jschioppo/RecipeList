@@ -88,7 +88,7 @@ public class Recipe implements Parcelable {
         mDirections = directions;
     }
 
-
+    //TEST COMMENT
     @Override
     public int describeContents() {
         return 0;
