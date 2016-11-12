@@ -7,12 +7,6 @@ An Android app that lets a user create a recipe with details like serving size, 
 
 The app will work on Android devices running with a minimum version requirement of 4.1 Jellybean (API 16).
 
-
-##Installing
-
-Blank for now
-
-
 ##Update Notes
 
 This is the first upload build. Currently, you can create and edit recipes. Database is live but bugged. 
