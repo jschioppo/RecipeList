@@ -21,7 +21,6 @@ public class RecipeList extends AppCompatActivity{
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int REQUEST_CODE=1;
-    ArrayList<Recipe> recipes;
 
     //private SQLiteDatabase mDatabase;
 
@@ -30,33 +29,36 @@ public class RecipeList extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RecipeSaver dbHelper = new RecipeSaver(this);
+        RecipeDB dbHelper = new RecipeDB(this);
+
         /*
         if(savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList("savedRecipes");
         }
         */
 
-        Recipe testRecipe = new Recipe();
-        testRecipe.setRecipeName("Test Recipe");
-        testRecipe.setServingSize("2 tests");
-        testRecipe.setCookTime("20");
-        testRecipe.setPrepTime("80");
 
-        Recipe testRecipeTwo = new Recipe();
-        testRecipeTwo.setRecipeName("Test two");
 
-        dbHelper.addRecipe(testRecipe);
-        dbHelper.addRecipe(testRecipeTwo);
+        ArrayList<String> one = new ArrayList<>();
+        one.add("Test");
 
-        recipes = dbHelper.getAllRecipes();
+        Recipe secondTestRecipe = new Recipe("Test Recipe", "Four slices",  "40", "80", one, one);
+
+        dbHelper.addRecipe(secondTestRecipe);
+
+        List<Recipe> recipes = dbHelper.getAllRecipes();
+
+        //recipes.add(testTwo); //This is to prove the adapter is working
+
 
         String log = "No results";
         for (Recipe rn : recipes){
-            log = "Id: " + rn.getID() + ", Name: " + rn.getRecipeName();
+            log = "Id: " + rn.getID() + ", Name: " + rn.getRecipeName() + ", Cook Time: " + rn.getCookTime() + " , Prep Time: " + rn.getPrepTime();
         }
+        Log.d("Name, ", "New Test------");
         Log.d("Name, ", log);
 
+        //This log is printing no results when the app actually runs
 
 
         setContentView(R.layout.activity_recipe_list);
@@ -95,6 +97,7 @@ public class RecipeList extends AppCompatActivity{
     */
 
 
+
     //This code is called after creating a new recipe. This is only for creating, and not editing.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -102,12 +105,13 @@ public class RecipeList extends AppCompatActivity{
         if (requestCode == REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK) {
                 Recipe editedRecipe = data.getExtras().getParcelable("recipe_key");
-                recipes.add(editedRecipe);
+                //recipes.add(editedRecipe);
                 mAdapter.notifyDataSetChanged();
             }
         }
     }
 
+    /*
     //This will be called from RecipeTextView after a user edits a recipe they chose. When a new reicpe is
     //created, the user returns here. When a recipe is edited, the user returns to that text view. But
     //The recipe still needs to be updated within this list (Yay consistency!)(Holy cow Google has spell check in comments...the future is now.)(Hire me I'm comical and write overly long comments.)
@@ -119,9 +123,11 @@ public class RecipeList extends AppCompatActivity{
                 mAdapter.notifyDataSetChanged();
                 break;
             }
+
         }
 
     }
+    */
 
 
 }

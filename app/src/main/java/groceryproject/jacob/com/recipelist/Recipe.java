@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,9 +15,8 @@ import java.util.UUID;
 public class Recipe implements Parcelable {
 
     //These are all of the qualities a recipe contains, we will create an arraylist of this in the activity
-    private static int nextRecipeCount = 0;
     private String mRecipeName;
-    private int mID = 0;
+    private int mID;
     private String mServings;
     private String mPrepTime;
     private String mCookTime;
@@ -26,8 +26,30 @@ public class Recipe implements Parcelable {
 
 
     public Recipe(){
-        mID = nextRecipeCount;
-        nextRecipeCount++;
+
+    }
+
+    public Recipe(int id, String name, String serving, String prep, String cook, List<String>
+                  ingredientsList, List<String> directionsList){
+
+        this.mID = id;
+        this.mRecipeName = name;
+        this.mServings = serving;
+        this.mPrepTime = prep;
+        this.mCookTime = cook;
+        this.mIngredients = ingredientsList;
+        this.mDirections = directionsList;
+    }
+
+    public Recipe(String name, String serving, String prep, String cook, List<String>
+            ingredientsList, List<String> directionsList){
+
+        this.mRecipeName = name;
+        this.mServings = serving;
+        this.mPrepTime = prep;
+        this.mCookTime = cook;
+        this.mIngredients = ingredientsList;
+        this.mDirections = directionsList;
     }
 
 
@@ -87,7 +109,6 @@ public class Recipe implements Parcelable {
     public void setDirections(List<String> directions) {
         mDirections = directions;
     }
-
 
     @Override
     public int describeContents() {
