@@ -12,21 +12,21 @@ package groceryproject.jacob.com.recipelist;
     import android.database.Cursor;
     import android.database.sqlite.SQLiteDatabase;
     import android.database.sqlite.SQLiteOpenHelper;
+    import android.util.Log;
 
 //TODO: Fix Prep Time becoming null
 public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "recipeManager";
 
-    // Contacts table name
+
     private static final String TABLE_RECIPES = "recipes";
 
-    // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "recipe_name";
     private static final String KEY_COOK_TIME = "cook_time";
@@ -45,7 +45,7 @@ public class RecipeDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RECIPES_TABLE = "CREATE TABLE " + TABLE_RECIPES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_SERVINGS + " TEXT," + " TEXT," + KEY_PREP_TIME + " TEXT, " + KEY_COOK_TIME + " TEXT,"
+                + KEY_SERVINGS + " TEXT," + KEY_PREP_TIME + " TEXT, " + KEY_COOK_TIME + " TEXT,"
                 + KEY_INGREDIENTS + " TEXT," + KEY_DIRECTIONS + " TEXT" + ")";
 
         db.execSQL(CREATE_RECIPES_TABLE);
@@ -154,6 +154,14 @@ public class RecipeDB extends SQLiteOpenHelper {
             do {
                 Recipe recipe = new Recipe();
 
+                Log.d("Name, ", "Index 0: " + cursor.getString(0));
+                Log.d("Name, ", "Index 1: " + cursor.getString(1));
+                Log.d("Name, ", "Index 2: " + cursor.getString(2));
+                Log.d("Name, ", "Index 3: " + cursor.getString(3));
+                Log.d("Name, ", "Index 4: " + cursor.getString(4));
+                Log.d("Name, ", "Index 5: " + cursor.getString(5));
+                Log.d("Name, ", "Index 6: " + cursor.getString(6));
+
                 recipe.setID(Integer.parseInt(cursor.getString(0)));
                 recipe.setRecipeName(cursor.getString(1));
                 recipe.setServingSize(cursor.getString(2));
@@ -202,8 +210,8 @@ public class RecipeDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, recipe.getRecipeName()); // Contact Name
-        values.put(KEY_SERVINGS, recipe.getServings()); // Contact Phone
+        values.put(KEY_NAME, recipe.getRecipeName());
+        values.put(KEY_SERVINGS, recipe.getServings());
         values.put(KEY_PREP_TIME, recipe.getPrepTime());
         values.put(KEY_COOK_TIME, recipe.getCookTime());
 
