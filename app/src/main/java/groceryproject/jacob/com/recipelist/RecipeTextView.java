@@ -117,6 +117,9 @@ public class RecipeTextView extends AppCompatActivity {
                 //RecipeList classObject = new RecipeList(getApplicationContext());
                 //classObject.updateList(editedRecipe);
 
+                RecipeDB dbHelper = new RecipeDB(this);
+                dbHelper.updateRecipe(editedRecipe);
+
                 selectedRecipe = editedRecipe;
                 this.loadActivity(editedRecipe);
 

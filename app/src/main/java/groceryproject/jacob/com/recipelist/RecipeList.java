@@ -21,6 +21,8 @@ public class RecipeList extends AppCompatActivity{
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int REQUEST_CODE=1;
+    RecipeDB dbHelper = new RecipeDB(this);
+    List<Recipe> recipes;
 
     //private SQLiteDatabase mDatabase;
 
@@ -29,24 +31,14 @@ public class RecipeList extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RecipeDB dbHelper = new RecipeDB(this);
+
 
         /*
         if(savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList("savedRecipes");
         }
         */
-
-
-
-        ArrayList<String> one = new ArrayList<>();
-        one.add("Test");
-
-        Recipe secondTestRecipe = new Recipe("Test Recipe", "Four slices",  "40", "80", one, one);
-
-        dbHelper.addRecipe(secondTestRecipe);
-
-        List<Recipe> recipes = dbHelper.getAllRecipes();
+        recipes = dbHelper.getAllRecipes();
 
         //recipes.add(testTwo); //This is to prove the adapter is working
 
@@ -88,6 +80,13 @@ public class RecipeList extends AppCompatActivity{
         });
     }
 
+    public void addNewReRecipe(Recipe recipe){
+        dbHelper.addRecipe(recipe);
+        recipes = dbHelper.getAllRecipes();
+        mAdapter = new MyAdapter(recipes);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     /*
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState){
@@ -104,30 +103,11 @@ public class RecipeList extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK) {
-                Recipe editedRecipe = data.getExtras().getParcelable("recipe_key");
-                //recipes.add(editedRecipe);
-                mAdapter.notifyDataSetChanged();
+                Recipe createdRecipe = data.getExtras().getParcelable("recipe_key");
+                addNewReRecipe(createdRecipe);
             }
         }
     }
-
-    /*
-    //This will be called from RecipeTextView after a user edits a recipe they chose. When a new reicpe is
-    //created, the user returns here. When a recipe is edited, the user returns to that text view. But
-    //The recipe still needs to be updated within this list (Yay consistency!)(Holy cow Google has spell check in comments...the future is now.)(Hire me I'm comical and write overly long comments.)
-    protected void updateList(Recipe editedRecipe){
-        for(Recipe recipe : recipes){
-            if(recipe.getID() == editedRecipe.getID()){
-                int index = recipes.indexOf(recipe);
-                recipes.set(index, editedRecipe);
-                mAdapter.notifyDataSetChanged();
-                break;
-            }
-
-        }
-
-    }
-    */
 
 
 }
