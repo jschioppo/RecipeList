@@ -14,32 +14,58 @@
         android:id="@+id/edit_recipe_button"
         android:text="@string/edit_button"
         android:padding="10dp"
-        android:background="@drawable/green_button_background"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_alignParentRight="true"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_buttons_text_view"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recipes"
+            android:id="@+id/navigate_to_recipes_button_text_view"
+            android:layout_marginTop="5dp"
+            android:enabled="true"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grocery List"
+            android:id="@+id/navigate_to_groceries_button_text_view"
+            android:layout_marginTop="5dp"
+            android:enabled="true"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_border"
+        android:layout_above="@id/navigation_buttons_text_view"
+        android:fillViewport="true"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_below="@id/edit_recipe_button">
+        android:layout_marginBottom="50dp"
+        >
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context="groceryproject.jacob.com.recipelist.EditRecipe"
-            android:orientation="vertical">
-
-
-
+            android:orientation="vertical"
+            android:id="@+id/recipe_text_view">
 
             <TextView
                 android:paddingTop="5dp"
@@ -84,9 +110,6 @@
                 android:layout_marginBottom="10dp"
                 />
 
-
-
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,8 +145,11 @@
                 tools:text="Where directions will go"
                 android:textSize="20dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/directions_text_view"/>
 
         </LinearLayout>
     </ScrollView>
+
+
 </RelativeLayout>

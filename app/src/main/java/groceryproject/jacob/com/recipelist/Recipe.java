@@ -20,6 +20,7 @@ public class Recipe implements Parcelable {
     private String mServings;
     private String mPrepTime;
     private String mCookTime;
+    private boolean isInList;
 
     private List<String> mIngredients;
     private List<String> mDirections;
@@ -39,6 +40,7 @@ public class Recipe implements Parcelable {
         this.mCookTime = cook;
         this.mIngredients = ingredientsList;
         this.mDirections = directionsList;
+        this.isInList = false;
     }
 
     public Recipe(String name, String serving, String prep, String cook, List<String>
@@ -50,6 +52,7 @@ public class Recipe implements Parcelable {
         this.mCookTime = cook;
         this.mIngredients = ingredientsList;
         this.mDirections = directionsList;
+        this.isInList = false;
     }
 
 
@@ -86,6 +89,10 @@ public class Recipe implements Parcelable {
         mPrepTime = prepTime;
     }
 
+    public void setServings(String servings) {
+        mServings = servings;
+    }
+
     public List<String> getIngredients() {
         return mIngredients;
     }
@@ -110,6 +117,14 @@ public class Recipe implements Parcelable {
         mDirections = directions;
     }
 
+    public boolean isInList() {
+        return isInList;
+    }
+
+    public void setInList(boolean inList) {
+        isInList = inList;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -118,25 +133,27 @@ public class Recipe implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.mRecipeName);
-        dest.writeSerializable(this.mID);
+        dest.writeInt(this.mID);
         dest.writeString(this.mServings);
         dest.writeString(this.mPrepTime);
         dest.writeString(this.mCookTime);
+        dest.writeByte(this.isInList ? (byte) 1 : (byte) 0);
         dest.writeStringList(this.mIngredients);
         dest.writeStringList(this.mDirections);
     }
 
     protected Recipe(Parcel in) {
         this.mRecipeName = in.readString();
-        this.mID = (int) in.readSerializable();
+        this.mID = in.readInt();
         this.mServings = in.readString();
         this.mPrepTime = in.readString();
         this.mCookTime = in.readString();
+        this.isInList = in.readByte() != 0;
         this.mIngredients = in.createStringArrayList();
         this.mDirections = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel source) {
             return new Recipe(source);

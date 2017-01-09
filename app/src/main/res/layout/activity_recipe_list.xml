@@ -23,8 +23,37 @@
         android:layout_height="match_parent"
         android:id="@+id/list_recycler_view"
         android:background="#BBDEFB"
-        android:elevation="12dp">
+        android:elevation="12dp"
+        android:layout_marginBottom="50dp">
     </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_buttons_list_view"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recipes"
+            android:id="@+id/navigate_to_recipes_button_list_view"
+            android:layout_marginTop="5dp"
+            android:enabled="true"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grocery List"
+            android:id="@+id/navigate_to_groceries_button_list_view"
+            android:layout_marginTop="5dp"
+            android:enabled="true"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
     
 </RelativeLayout>

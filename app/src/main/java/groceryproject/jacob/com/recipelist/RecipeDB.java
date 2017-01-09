@@ -34,6 +34,7 @@ public class RecipeDB extends SQLiteOpenHelper {
     private static final String KEY_SERVINGS = "servings";
     private static final String KEY_INGREDIENTS = "ingredients";
     private static final String KEY_DIRECTIONS = "directions";
+    private static final String KEY_IN_LIST = "isInList";
 
     public RecipeDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
