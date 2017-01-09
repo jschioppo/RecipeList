@@ -30,9 +30,7 @@ public class RecipeList extends AppCompatActivity{
     //TODO: Create a navigaton bar.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
+        
         /*
         if(savedInstanceState != null){
             recipes = savedInstanceState.getParcelableArrayList("savedRecipes");
