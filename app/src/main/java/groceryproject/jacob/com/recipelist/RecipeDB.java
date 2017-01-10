@@ -19,7 +19,7 @@ public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database Name
     private static final String DATABASE_NAME = "recipeManager";
@@ -47,7 +47,7 @@ public class RecipeDB extends SQLiteOpenHelper {
         String CREATE_RECIPES_TABLE = "CREATE TABLE " + TABLE_RECIPES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_SERVINGS + " TEXT," + KEY_PREP_TIME + " TEXT, " + KEY_COOK_TIME + " TEXT,"
-                + KEY_INGREDIENTS + " TEXT," + KEY_DIRECTIONS + " TEXT" + ")";
+                + KEY_INGREDIENTS + " TEXT," + KEY_DIRECTIONS + " TEXT, " + KEY_IN_LIST + " INTEGER" + ")";
 
         db.execSQL(CREATE_RECIPES_TABLE);
     }
@@ -97,6 +97,11 @@ public class RecipeDB extends SQLiteOpenHelper {
         values.put(KEY_INGREDIENTS, ingedientsConcat);
         values.put(KEY_DIRECTIONS, directionsConcat);
 
+        boolean inList = recipe.isInList();
+        int flag = (inList) ? 1: 0;
+
+        values.put(KEY_IN_LIST, flag);
+
 
         db.insert(TABLE_RECIPES, null, values);
         db.close(); // Closing database connection
@@ -107,7 +112,7 @@ public class RecipeDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_RECIPES, new String[] { KEY_ID,
-                        KEY_NAME, KEY_SERVINGS, KEY_PREP_TIME, KEY_COOK_TIME, KEY_INGREDIENTS, KEY_DIRECTIONS },
+                        KEY_NAME, KEY_SERVINGS, KEY_PREP_TIME, KEY_COOK_TIME, KEY_INGREDIENTS, KEY_DIRECTIONS, KEY_IN_LIST },
                         KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -137,8 +142,11 @@ public class RecipeDB extends SQLiteOpenHelper {
             }
         }
 
+        int flag = cursor.getInt(7);
+        boolean inList = (flag != 0);
+
         Recipe recipe = new Recipe(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
-                cursor.getString(3), cursor.getString(4), ingredientsList, directionsList);
+                cursor.getString(3), cursor.getString(4), ingredientsList, directionsList, inList);
         return recipe;
     }
 
@@ -155,6 +163,7 @@ public class RecipeDB extends SQLiteOpenHelper {
             do {
                 Recipe recipe = new Recipe();
 
+                /*
                 Log.d("Name, ", "Index 0: " + cursor.getString(0));
                 Log.d("Name, ", "Index 1: " + cursor.getString(1));
                 Log.d("Name, ", "Index 2: " + cursor.getString(2));
@@ -162,6 +171,8 @@ public class RecipeDB extends SQLiteOpenHelper {
                 Log.d("Name, ", "Index 4: " + cursor.getString(4));
                 Log.d("Name, ", "Index 5: " + cursor.getString(5));
                 Log.d("Name, ", "Index 6: " + cursor.getString(6));
+                Log.d("Name, ", "Index 7: " + cursor.getInt(7));
+                */
 
                 recipe.setID(Integer.parseInt(cursor.getString(0)));
                 recipe.setRecipeName(cursor.getString(1));
@@ -197,6 +208,10 @@ public class RecipeDB extends SQLiteOpenHelper {
 
                 recipe.setIngredients(ingredientsList);
                 recipe.setDirections(directionsList);
+
+                int flag = cursor.getInt(7);
+                boolean inList = (flag != 0);
+                recipe.setInList(inList);
 
                 recipeList.add(recipe);
             } while (cursor.moveToNext());
