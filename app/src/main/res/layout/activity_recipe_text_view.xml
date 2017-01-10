@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blue_background"
-    android:padding="5dp">
+    >
 
     <Button
         android:layout_width="wrap_content"
@@ -34,7 +33,8 @@
             android:id="@+id/navigate_to_recipes_button_text_view"
             android:layout_marginTop="5dp"
             android:enabled="true"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/brightGray"/>
 
         <Button
             android:layout_width="match_parent"
@@ -43,7 +43,8 @@
             android:id="@+id/navigate_to_groceries_button_text_view"
             android:layout_marginTop="5dp"
             android:enabled="true"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/brightGray"/>
 
     </LinearLayout>
 
@@ -55,8 +56,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="50dp"
-        >
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/edit_recipe_button">
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

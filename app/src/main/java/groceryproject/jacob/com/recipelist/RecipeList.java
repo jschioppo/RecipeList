@@ -40,10 +40,10 @@ public class RecipeList extends AppCompatActivity{
 
         //recipes.add(testTwo); //This is to prove the adapter is working
 
-
-        String log = "No results";
+        String log = "";
         for (Recipe rn : recipes){
-            log = "Id: " + rn.getID() + ", Name: " + rn.getRecipeName() + ", Cook Time: " + rn.getCookTime() + " , Prep Time: " + rn.getPrepTime();
+            log += "Id: " + rn.getID() + ", Name: " + rn.getRecipeName() + ", Cook Time: " + rn.getCookTime() + " , Prep Time: " + rn.getPrepTime();
+            log += "\n";
         }
         Log.d("Name, ", "New Test------");
         Log.d("Name, ", log);

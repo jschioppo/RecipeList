@@ -20,7 +20,6 @@ import java.util.List;
 
 //This class is used to edit a recipe. Editing includes both creating a new recipe and editing an existing one
 //The edit and create button are in RecipeTextView (Edit) and RecipeList (Create)
-//TODO: Change passes to Parcelable
 public class EditRecipe extends AppCompatActivity {
     private final String TAG = "myApp";
     private EditText mRecipeName;
@@ -46,7 +45,6 @@ public class EditRecipe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called");
         setContentView(R.layout.activity_edit_recipe);
 
         final Recipe passedRecipe = (Recipe) getIntent().getExtras().getParcelable("passed_recipe_key");
@@ -65,6 +63,9 @@ public class EditRecipe extends AppCompatActivity {
         if(passedRecipe.getRecipeName() != null){
             mRecipeName.setText(passedRecipe.getRecipeName(), TextView.BufferType.EDITABLE);
             recipeName = passedRecipe.getRecipeName();
+        }
+        else{
+            passedRecipe.setInList(false);
         }
         if(passedRecipe.getPrepTime() != null){
             mPrepTime.setText(passedRecipe.getPrepTime(), TextView.BufferType.EDITABLE);

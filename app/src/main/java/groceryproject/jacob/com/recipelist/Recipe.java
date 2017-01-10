@@ -31,7 +31,7 @@ public class Recipe implements Parcelable {
     }
 
     public Recipe(int id, String name, String serving, String prep, String cook, List<String>
-                  ingredientsList, List<String> directionsList){
+                  ingredientsList, List<String> directionsList, boolean inList){
 
         this.mID = id;
         this.mRecipeName = name;
@@ -40,11 +40,11 @@ public class Recipe implements Parcelable {
         this.mCookTime = cook;
         this.mIngredients = ingredientsList;
         this.mDirections = directionsList;
-        this.isInList = false;
+        this.isInList = inList;
     }
 
     public Recipe(String name, String serving, String prep, String cook, List<String>
-            ingredientsList, List<String> directionsList){
+            ingredientsList, List<String> directionsList, boolean inList){
 
         this.mRecipeName = name;
         this.mServings = serving;
@@ -52,7 +52,7 @@ public class Recipe implements Parcelable {
         this.mCookTime = cook;
         this.mIngredients = ingredientsList;
         this.mDirections = directionsList;
-        this.isInList = false;
+        this.isInList = inList;
     }
 
 

@@ -20,6 +20,7 @@ public class RecipeTextView extends AppCompatActivity {
     private TextView mDirections;
     private TextView mIngredients;
     private Button mEditButton;
+    private Button mNavigateRecipesButton;
     private int REQUEST_CODE = 1;
     Recipe selectedRecipe = new Recipe();
 
@@ -99,6 +100,15 @@ public class RecipeTextView extends AppCompatActivity {
                 Intent i = new Intent(RecipeTextView.this, EditRecipe.class);
                 i.putExtra("passed_recipe_key", passedRecipe);
                 startActivityForResult(i, REQUEST_CODE);
+            }
+        });
+
+        mNavigateRecipesButton = (Button) findViewById(R.id.navigate_to_recipes_button_text_view);
+        mNavigateRecipesButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(RecipeTextView.this, RecipeList.class);
+                startActivity(i);
             }
         });
     }
