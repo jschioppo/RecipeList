@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:groceryproject="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/recipe_list_add_recipe_actionbar_button"
+        android:title=""
+        android:orderInCategory="100"
+        groceryproject:showAsAction="always"
+        android:icon="@mipmap/green_add_icon"
+        />
+</menu>

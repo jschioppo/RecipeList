@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import java.util.ArrayList;
@@ -84,6 +86,13 @@ public class RecipeList extends AppCompatActivity{
         recipes = dbHelper.getAllRecipes();
         mAdapter = new MyAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_add_button_recipe_list, menu);
+        return true;
     }
 
     /*
