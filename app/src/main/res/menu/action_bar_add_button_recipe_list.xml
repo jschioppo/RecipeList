@@ -3,7 +3,7 @@
       xmlns:groceryproject="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/recipe_list_add_recipe_actionbar_button"
-        android:title=""
+        android:title="Add"
         android:orderInCategory="100"
         groceryproject:showAsAction="always"
         android:icon="@mipmap/green_add_icon"
