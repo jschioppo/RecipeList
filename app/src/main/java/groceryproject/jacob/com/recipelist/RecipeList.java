@@ -28,10 +28,6 @@ public class RecipeList extends AppCompatActivity{
     RecipeDB dbHelper = new RecipeDB(this);
     List<Recipe> recipes;
 
-    //private SQLiteDatabase mDatabase;
-
-    //TODO: Create a new taskbar
-    //TODO: Create a navigaton bar.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -53,7 +49,7 @@ public class RecipeList extends AppCompatActivity{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-        mAdapter = new MyAdapter(recipes);
+        mAdapter = new RecipeListAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -79,7 +75,7 @@ public class RecipeList extends AppCompatActivity{
     public void addNewReRecipe(Recipe recipe){
         dbHelper.addRecipe(recipe);
         recipes = dbHelper.getAllRecipes();
-        mAdapter = new MyAdapter(recipes);
+        mAdapter = new RecipeListAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -14,7 +14,7 @@ package groceryproject.jacob.com.recipelist;
     import android.database.sqlite.SQLiteOpenHelper;
     import android.util.Log;
 
-//TODO: Fix Prep Time becoming null
+
 public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables

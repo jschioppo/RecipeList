@@ -19,13 +19,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-//TODO: Rename this to something more relevant instead of MyAdapter
-//TODO: Create a delete button
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
+public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder>{
 
     private List<Recipe> mRecipeSet;
 
-    public MyAdapter(List<Recipe> recipes){
+    public RecipeListAdapter(List<Recipe> recipes){
         mRecipeSet = recipes;
     }
 
@@ -79,13 +77,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
 
 
-    public MyAdapter(ArrayList<Recipe> myRecipeset) {
+    public RecipeListAdapter(ArrayList<Recipe> myRecipeset) {
         mRecipeSet = myRecipeset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecipeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_item_recycled, parent, false);
         ViewHolder vh = new ViewHolder(v);

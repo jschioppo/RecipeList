@@ -26,6 +26,8 @@
             android:name=".RecipeTextView"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".ExpandableListView">
+        </activity>
     </application>
 
 </manifest>
