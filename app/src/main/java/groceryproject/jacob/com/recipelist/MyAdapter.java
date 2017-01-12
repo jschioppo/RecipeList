@@ -94,9 +94,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     }
 
 
-
-
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe recipe = mRecipeSet.get(position);

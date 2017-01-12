@@ -1,9 +1,16 @@
 package groceryproject.jacob.com.recipelist;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +28,9 @@ public class RecipeTextView extends AppCompatActivity {
     private TextView mIngredients;
     private Button mEditButton;
     private Button mNavigateRecipesButton;
+    private Button mDeleteButton;
     private int REQUEST_CODE = 1;
+    RecipeDB dbHelper = new RecipeDB(this);
     Recipe selectedRecipe = new Recipe();
 
     @Override
@@ -111,6 +120,35 @@ public class RecipeTextView extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        //Handles menu buttons
+        switch (item.getItemId()){
+            case R.id.recipe_text_view_delete_button_action_bar:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+                builder.setTitle("Are you sure?");
+                builder.setMessage("This action cannot be undone.");
+                builder.setPositiveButton("I'm sure", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dbHelper.deleteRecipe(selectedRecipe);
+                        Intent p = new Intent(RecipeTextView.this, RecipeList.class);
+                        startActivity(p);
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+                //dbHelper.deleteRecipe(selectedRecipe);
+                //Intent i = new Intent(RecipeTextView.this, RecipeList.class);
+                //startActivity(i);
+                return true;
+            default:
+                Log.d("Name,", "default called, textview class");
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
@@ -135,5 +173,13 @@ public class RecipeTextView extends AppCompatActivity {
 
             }
         }
+    }
+
+    //Makes the menu bar appear as it is in the action_bar_add_button_recipe_list menu layout file
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.recipe_text_view_action_bar_buttons, menu);
+        return true;
     }
 }

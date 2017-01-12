@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import java.util.ArrayList;
@@ -33,15 +34,8 @@ public class RecipeList extends AppCompatActivity{
     //TODO: Create a navigaton bar.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        /*
-        if(savedInstanceState != null){
-            recipes = savedInstanceState.getParcelableArrayList("savedRecipes");
-        }
-        */
-        recipes = dbHelper.getAllRecipes();
 
-        //recipes.add(testTwo); //This is to prove the adapter is working
+        recipes = dbHelper.getAllRecipes();
 
         String log = "";
         for (Recipe rn : recipes){
@@ -50,9 +44,6 @@ public class RecipeList extends AppCompatActivity{
         }
         Log.d("Name, ", "New Test------");
         Log.d("Name, ", log);
-
-        //This log is printing no results when the app actually runs
-
 
         setContentView(R.layout.activity_recipe_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.list_recycler_view);
@@ -65,20 +56,24 @@ public class RecipeList extends AppCompatActivity{
         mAdapter = new MyAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
 
-
-        //This button creates a new empty Recipe object and passes it to the EditRecipe class
-        //The Recipe object is passed as a parcelable
-        Button mCreateRecipeButton = (Button) findViewById(R.id.create_new_recipe_button);
-        mCreateRecipeButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //Create a new empty recipe to be passed to the EditRecipe class
+    public boolean onOptionsItemSelected(MenuItem item){
+        //Handles menu buttons
+        switch (item.getItemId()){
+            case R.id.recipe_list_add_recipe_actionbar_button:
+                //This button creates a new empty Recipe object and passes it to the EditRecipe class
+                //The Recipe object is passed as a parcelable
                 Recipe passedRecipe = new Recipe();
                 Intent i = new Intent(RecipeList.this, EditRecipe.class);
                 i.putExtra("passed_recipe_key", (Parcelable) passedRecipe);
                 startActivityForResult(i, REQUEST_CODE);
-            }
-        });
+                return true;
+            default:
+                Log.d("Name,", "default called");
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     public void addNewReRecipe(Recipe recipe){
@@ -88,21 +83,13 @@ public class RecipeList extends AppCompatActivity{
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    //Makes the menu bar appear as it is in the action_bar_add_button_recipe_list menu layout file
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_bar_add_button_recipe_list, menu);
         return true;
     }
-
-    /*
-    @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putParcelableArrayList("savedRecipes", recipes);
-
-    }
-    */
-
 
 
     //This code is called after creating a new recipe. This is only for creating, and not editing.
