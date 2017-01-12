@@ -144,6 +144,10 @@ public class RecipeTextView extends AppCompatActivity {
                 //Intent i = new Intent(RecipeTextView.this, RecipeList.class);
                 //startActivity(i);
                 return true;
+            case R.id.recipe_text_view_edit_button_action_bar:
+                Intent i = new Intent(RecipeTextView.this, EditRecipe.class);
+                i.putExtra("passed_recipe_key", selectedRecipe);
+                startActivityForResult(i, REQUEST_CODE);
             default:
                 Log.d("Name,", "default called, textview class");
                 return super.onOptionsItemSelected(item);
