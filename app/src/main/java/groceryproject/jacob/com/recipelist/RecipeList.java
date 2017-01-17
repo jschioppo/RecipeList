@@ -1,12 +1,8 @@
 package groceryproject.jacob.com.recipelist;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,18 +23,11 @@ public class RecipeList extends AppCompatActivity{
     RecipeDB dbHelper = new RecipeDB(this);
     List<Recipe> recipes;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         recipes = dbHelper.getAllRecipes();
-
-        String log = "";
-        for (Recipe rn : recipes){
-            log += "Id: " + rn.getID() + ", Name: " + rn.getRecipeName() + ", Cook Time: " + rn.getCookTime() + " , Prep Time: " + rn.getPrepTime();
-            log += "\n";
-        }
-        Log.d("Name, ", "New Test------");
-        Log.d("Name, ", log);
 
         setContentView(R.layout.activity_recipe_list);
         mRecyclerView = (RecyclerView) findViewById(R.id.list_recycler_view);
@@ -48,10 +36,13 @@ public class RecipeList extends AppCompatActivity{
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
         mAdapter = new RecipeListAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
@@ -79,11 +70,11 @@ public class RecipeList extends AppCompatActivity{
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    //Makes the menu bar appear as it is in the action_bar_add_button_recipe_list menu layout file
+    //Makes the menu bar appear as it is in the action_bar_recipe_list_buttons menu layout file
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_bar_add_button_recipe_list, menu);
+        inflater.inflate(R.menu.action_bar_recipe_list_buttons, menu);
         return true;
     }
 

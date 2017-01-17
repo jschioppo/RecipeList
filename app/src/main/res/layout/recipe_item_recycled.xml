@@ -2,55 +2,66 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/apk/res/android"
-    android:layout_margin="10dp"
+    android:layout_margin="7dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:id="@+id/recycled_item_section_view"
+    android:elevation="30dp"
     android:background="@drawable/background_border"
-    android:paddingBottom="15dp"
-    android:paddingTop="15dp"
-    android:id="@+id/recycled_item_section_view">
+    >
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Recipe name"
-        android:textSize="32dp"
+        android:textSize="24dp"
+        android:textColor="@color/black"
         android:id="@+id/recipe_list_recycler_view_recipe_name"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="3dp"
+        android:maxWidth="275dip"
+        android:singleLine="false"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
         android:layout_below="@id/recipe_list_recycler_view_recipe_name"
         android:id="@+id/recipe_list_recycler_view_serving_size"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="3dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@mipmap/ic_playlist_add_black_24dp"
         android:height="36dp"
         android:padding="8dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/add_to_grocery_list"/>
+        android:id="@+id/add_to_grocery_list"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_list_recycler_view_serving_size"
         android:layout_alignParentLeft="true"
-        android:textSize="24dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
         android:id="@+id/recipe_list_recycler_view_prep_time"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="3dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_list_recycler_view_prep_time"
-        android:textSize="24dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
         android:layout_alignParentLeft="true"
         android:id="@+id/recipe_list_recycler_view_cook_time"/>
 
