@@ -6,27 +6,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blue_background">
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="@color/brightGray">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_gravity="top|right"
-        android:background="@drawable/green_button_background"
-        android:textColor="@android:color/black"
-        android:layout_alignParentRight="true"
-        android:padding="5dp"
-        android:id="@+id/save_edit_recipe_button"
-        />
+
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_border"
-        android:layout_margin="5dp"
-        android:layout_below="@id/save_edit_recipe_button">
+        android:fillViewport="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="30dp"
+        android:background="@color/white">
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,6 +40,7 @@
                 android:id="@+id/recipe_name_text_view"
                 android:text="@string/recipe_name"
                 android:textSize="22dp"
+                android:textColor="@color/black"
                 style="?android:listSeparatorTextViewStyle"/>
 
             <EditText
@@ -64,7 +61,8 @@
                 android:textSize="22dp"
                 android:id="@+id/serving_text_view"
                 style="?android:listSeparatorTextViewStyle"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -74,7 +72,8 @@
                 android:layout_marginRight="16dp"
                 android:hint="Ex: 2 servings, 12 slices"
                 android:layout_marginBottom="16dp"
-                android:inputType="textCapSentences"/>
+                android:inputType="textCapSentences"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -82,7 +81,8 @@
                 android:text="@string/prep_time"
                 android:textSize="22dp"
                 android:id="@+id/prep_time_text_view"
-                style="?android:listSeparatorTextViewStyle"/>
+                style="?android:listSeparatorTextViewStyle"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -101,7 +101,8 @@
                 android:text="@string/cook_time"
                 android:textSize="22dp"
                 android:id="@+id/cook_time_text_view"
-                style="?android:listSeparatorTextViewStyle"/>
+                style="?android:listSeparatorTextViewStyle"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -121,7 +122,8 @@
                 android:text="@string/ingredients"
                 android:textSize="22dp"
                 android:id="@+id/ingredients_text_view"
-                style="?android:listSeparatorTextViewStyle"/>
+                style="?android:listSeparatorTextViewStyle"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -140,7 +142,8 @@
                 android:textSize="22dp"
                 android:layout_marginTop="16dp"
                 android:id="@+id/directions_text_view"
-                style="?android:listSeparatorTextViewStyle"/>
+                style="?android:listSeparatorTextViewStyle"
+                android:textColor="@color/black"/>
 
 
             <EditText

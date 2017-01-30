@@ -6,6 +6,6 @@
         android:title="Add"
         android:orderInCategory="100"
         groceryproject:showAsAction="always"
-        android:icon="@mipmap/green_add_icon"
+        android:icon="@mipmap/ic_add_circle_black_24dp"
         />
 </menu>

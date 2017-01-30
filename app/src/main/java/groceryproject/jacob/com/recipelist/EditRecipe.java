@@ -3,6 +3,7 @@ package groceryproject.jacob.com.recipelist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +11,9 @@ import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +24,9 @@ import java.util.List;
 
 //This class is used to edit a recipe. Editing includes both creating a new recipe and editing an existing one
 //The edit and create button are in RecipeTextView (Edit) and RecipeList (Create)
+//TODO: Edit the XML for the edit recipe activity to be consistent with the text view one
+//TODO: Go through comments to delete outdated info
 public class EditRecipe extends AppCompatActivity {
-    private final String TAG = "myApp";
     private EditText mRecipeName;
     private EditText mServings;
     private EditText mPrepTime;
@@ -31,8 +36,6 @@ public class EditRecipe extends AppCompatActivity {
     private EditText mCookTime;
     private int REQUEST_CODE = 1;
 
-    //These are declared here so that I can use them within each edit text listener, and then set them to the values
-    //of the recipe object when the save button is pushed.
 
     private String recipeName;
     private String prepTime;
@@ -41,13 +44,15 @@ public class EditRecipe extends AppCompatActivity {
     //For directions and ingredients, we will seperate these into a list of strings by \n (new line).
     private String directions;
     private String ingredients;
+    Recipe passedRecipe = new Recipe();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
 
-        final Recipe passedRecipe = (Recipe) getIntent().getExtras().getParcelable("passed_recipe_key");
+        passedRecipe = (Recipe) getIntent().getExtras().getParcelable("passed_recipe_key");
 
         mRecipeName = (EditText) findViewById(R.id.recipe_name_text_edit);
         mPrepTime = (EditText) findViewById(R.id.prep_time_edit_text);
@@ -55,7 +60,7 @@ public class EditRecipe extends AppCompatActivity {
         mServings = (EditText) findViewById(R.id.serving_edit_text);
         mIngredients = (EditText) findViewById(R.id.ingredients_edit_text);
         mDirections = (EditText) findViewById(R.id.directions_edit_text);
-        mSaveButton = (Button) findViewById(R.id.save_edit_recipe_button);
+
 
 
         //The following if statements will only be triggered if this class is accessed from editing an
@@ -134,7 +139,9 @@ public class EditRecipe extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (mPrepTime.length() == 0){
+                    prepTime = null;
+                }
             }
         });
 
@@ -151,7 +158,9 @@ public class EditRecipe extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (mServings.length() == 0){
+                    servings = null;
+                }
             }
         });
 
@@ -168,7 +177,9 @@ public class EditRecipe extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (mCookTime.length() == 0){
+                    cookTime = null;
+                }
             }
         });
 
@@ -211,28 +222,50 @@ public class EditRecipe extends AppCompatActivity {
         });
 
 
-        //TODO
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_edit_recipe_buttons, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Handles menu buttons
+        switch (item.getItemId()) {
+            case R.id.edit_recipe_action_bar_cancel_button:
+                //Will return to the activity that called it
+                finish();
+                return true;
+            case R.id.edit_recipe_action_bar_save_button:
                 //If statement to make sure the recipe name exists. Every other value can be empty
                 //if the user wishes
-                if (TextUtils.isEmpty(recipeName)){
+                if (TextUtils.isEmpty(recipeName)) {
                     mRecipeName.setError("Recipe name can not be empty.");
-                    return;
+                    return false;
                 }
 
                 if (recipeName != null) {
                     passedRecipe.setRecipeName(recipeName);
                 }
-                if(cookTime != null) {
+                if (cookTime != null) {
                     passedRecipe.setCookTime(cookTime);
                 }
-                if(prepTime != null) {
+                else{
+                    passedRecipe.setCookTime(null);
+                }
+                if (prepTime != null) {
                     passedRecipe.setPrepTime(prepTime);
+                }
+                else{
+                    passedRecipe.setPrepTime(null);
                 }
                 if (servings != null) {
                     passedRecipe.setServingSize(servings);
+                }
+                else {
+                    passedRecipe.setServingSize(null);
                 }
 
 
@@ -242,27 +275,23 @@ public class EditRecipe extends AppCompatActivity {
                 //Check if the edit text strings are null. if they are, add an empty string to each list
                 //If they aren't null, check if they are multi lined.
                 //If multi lined, save into a list split by new line. Otherwise, it is just one string. Add it to the list
-                if (directions != null){
-                    if(directions.contains("\n")) {
+                if (directions != null) {
+                    if (directions.contains("\n")) {
                         directionsList = Arrays.asList(directions.split("\n"));
-                    }
-                    else{
+                    } else {
                         directionsList = Arrays.asList(directions);
                     }
-                }
-                else{
+                } else {
                     directionsList.add("");
                 }
 
-                if (ingredients != null){
-                    if(ingredients.contains("\n")) {
+                if (ingredients != null) {
+                    if (ingredients.contains("\n")) {
                         ingredientsList = Arrays.asList(ingredients.split("\n"));
-                    }
-                    else{
+                    } else {
                         ingredientsList = Arrays.asList(ingredients);
                     }
-                }
-                else{
+                } else {
                     ingredientsList.add("");
                 }
 
@@ -274,9 +303,14 @@ public class EditRecipe extends AppCompatActivity {
                 returnIntent.putExtra("recipe_key", passedRecipe);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
-            }
-        });
+            default:
+                Log.d("Name,", "default called");
+                return super.onOptionsItemSelected(item);
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 
 }

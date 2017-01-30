@@ -23,8 +23,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
-    public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader,
-                                           HashMap<String, List<String>> listChildData) {
+    public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -32,8 +31,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -48,13 +46,11 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.expandable_list_recipe_ingredient_item);
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.expandable_list_recipe_ingredient_item);
 
         txtListChild.setText(childText);
         return convertView;
@@ -62,8 +58,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
     }
 
     @Override
@@ -82,17 +77,15 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             convertView = infalInflater.inflate(R.layout.expandable_list_view_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.expandable_list_recipe_header);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.expandable_list_recipe_header);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 

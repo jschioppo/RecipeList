@@ -6,18 +6,15 @@ package groceryproject.jacob.com.recipelist;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder>{
 
@@ -98,7 +95,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         String recipeName = recipe.getRecipeName();
         String prepTime = "Prep Time: " + String.valueOf(recipe.getPrepTime()) + " minutes";
         String cookTime = "Cook Time: " + String.valueOf(recipe.getCookTime()) + " minutes";
-        String servingSize = "Serves: " + String.valueOf(recipe.getServings());
+        String servingSize = "Servings: " + String.valueOf(recipe.getServings());
 
         holder.mRecipeName.setText(recipeName);
 

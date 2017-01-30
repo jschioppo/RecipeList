@@ -3,7 +3,6 @@ package groceryproject.jacob.com.recipelist;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class RecipeTextView extends AppCompatActivity {
@@ -60,10 +58,11 @@ public class RecipeTextView extends AppCompatActivity {
 
         mServings = (TextView) findViewById(R.id.serving_text_view);
         if(passedRecipe.getServings() != null && passedRecipe.getServings() != "") {
-            mServings.setText(passedRecipe.getServings());
+            mServings.setText("Servings: " + passedRecipe.getServings());
         }
 
         mPrepTime = (TextView) findViewById(R.id.prep_time_text_view);
+        mPrepTime.setText(null);
         if(passedRecipe.getPrepTime() != null && passedRecipe.getPrepTime() != "") {
             mPrepTime.setText("Prep time: " + selectedRecipe.getPrepTime() + " minutes");
         }
@@ -102,6 +101,7 @@ public class RecipeTextView extends AppCompatActivity {
             mDirections.setText(directionsConcat);
         }
 
+        /*
         mEditButton = (Button) findViewById(R.id.edit_recipe_button);
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +111,7 @@ public class RecipeTextView extends AppCompatActivity {
                 startActivityForResult(i, REQUEST_CODE);
             }
         });
+        */
 
         mNavigateRecipesButton = (Button) findViewById(R.id.navigate_to_recipes_button_text_view);
         mNavigateRecipesButton.setOnClickListener(new View.OnClickListener(){
@@ -140,9 +141,6 @@ public class RecipeTextView extends AppCompatActivity {
                 });
                 builder.setNegativeButton("Cancel", null);
                 builder.show();
-                //dbHelper.deleteRecipe(selectedRecipe);
-                //Intent i = new Intent(RecipeTextView.this, RecipeList.class);
-                //startActivity(i);
                 return true;
             case R.id.recipe_text_view_edit_button_action_bar:
                 Intent i = new Intent(RecipeTextView.this, EditRecipe.class);
@@ -166,9 +164,6 @@ public class RecipeTextView extends AppCompatActivity {
                 //Since the user is returned to this class and not RecipeList, we want to make sure that the appropriate
                 //list inside the list of recipes. This is only necessary here since creating a new recipe returns the user to the recipe list.
 
-                //RecipeList classObject = new RecipeList(getApplicationContext());
-                //classObject.updateList(editedRecipe);
-
                 RecipeDB dbHelper = new RecipeDB(this);
                 dbHelper.updateRecipe(editedRecipe);
 
@@ -179,11 +174,17 @@ public class RecipeTextView extends AppCompatActivity {
         }
     }
 
-    //Makes the menu bar appear as it is in the action_bar_add_button_recipe_list menu layout file
+    //Makes the menu bar appear as it is in the action_bar_recipe_list_buttons menu layout file
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.recipe_text_view_action_bar_buttons, menu);
+        inflater.inflate(R.menu.action_bar_text_view_buttons, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(RecipeTextView.this, RecipeList.class);
+        startActivity(i);
     }
 }

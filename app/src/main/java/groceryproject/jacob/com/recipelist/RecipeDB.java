@@ -19,13 +19,14 @@ public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Database Name
     private static final String DATABASE_NAME = "recipeManager";
 
 
     private static final String TABLE_RECIPES = "recipes";
+    private static final String TABLE_GROCERIES = "groceries";
 
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "recipe_name";
@@ -35,6 +36,11 @@ public class RecipeDB extends SQLiteOpenHelper {
     private static final String KEY_INGREDIENTS = "ingredients";
     private static final String KEY_DIRECTIONS = "directions";
     private static final String KEY_IN_LIST = "isInList";
+
+    //Values for the grocery list table
+    private static final String KEY_ID_GROCERIES = "id_groceries";
+    private static final String KEY_INGREDIENTS_GROCERIES = "ingredient_groceries";
+    private static final String KEY_NAME_GROCERIES = "name_groceries";
 
     public RecipeDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,15 +55,21 @@ public class RecipeDB extends SQLiteOpenHelper {
                 + KEY_SERVINGS + " TEXT," + KEY_PREP_TIME + " TEXT, " + KEY_COOK_TIME + " TEXT,"
                 + KEY_INGREDIENTS + " TEXT," + KEY_DIRECTIONS + " TEXT, " + KEY_IN_LIST + " INTEGER" + ")";
 
+        String CREATE_GROCERIES_TABLE = "CREATE TABLE " + TABLE_GROCERIES + "{"
+                + KEY_ID_GROCERIES + " INTEGER PRIMERY KEY," + KEY_NAME_GROCERIES + " TEXT,"
+                + KEY_INGREDIENTS_GROCERIES + " TEXT" + ")";
+
         db.execSQL(CREATE_RECIPES_TABLE);
+        db.execSQL(CREATE_GROCERIES_TABLE);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
-        // Create tables again
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROCERIES);
+
         onCreate(db);
     }
 
@@ -107,6 +119,31 @@ public class RecipeDB extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    //This will create a entry in the grocery table using an already existing recipe object.
+    public void addGroceryItem(Recipe newListItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME_GROCERIES, newListItem.getRecipeName());
+
+        String ingedientsConcat = "";
+
+        if(newListItem.getIngredients() != null) {
+            StringBuilder ingred = new StringBuilder();
+            for (String s : newListItem.getIngredients()) {
+                ingred.append(s);
+                ingred.append("\t");
+            }
+            ingedientsConcat = ingred.toString();
+        }
+
+        values.put(KEY_INGREDIENTS_GROCERIES, ingedientsConcat);
+
+        db.insert(TABLE_GROCERIES, null, values);
+
+
+    }
+
 
     Recipe getRecipe(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -151,7 +188,7 @@ public class RecipeDB extends SQLiteOpenHelper {
     }
 
     public List<Recipe> getAllRecipes() {
-        List<Recipe> recipeList = new ArrayList<Recipe>();
+        List<Recipe> recipeList = new ArrayList<>();
 
         String selectQuery = "SELECT  * FROM " + TABLE_RECIPES;
 
@@ -221,6 +258,41 @@ public class RecipeDB extends SQLiteOpenHelper {
         return recipeList;
     }
 
+    public List<GroceryListItem> getAllGroceries(){
+        List<GroceryListItem> groceries = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_GROCERIES;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                List<String> ingredientsList = new ArrayList<>();
+                String ingredients = cursor.getString(2);
+
+                if (ingredients != null){
+                    if(ingredients.contains("\t")) {
+                        ingredientsList = Arrays.asList(ingredients.split("\t"));
+                    }
+                    else{
+                        ingredientsList = Arrays.asList(ingredients);
+                    }
+                }
+
+                GroceryListItem groceryItem = new GroceryListItem(Integer.parseInt(cursor.getString(0)),
+                        cursor.getString(1), ingredientsList);
+
+                groceries.add(groceryItem);
+
+
+            }while (cursor.moveToNext());
+        }
+
+
+        return groceries;
+
+    }
+
 
     public int updateRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -261,6 +333,29 @@ public class RecipeDB extends SQLiteOpenHelper {
                 new String[] { String.valueOf(recipe.getID()) });
     }
 
+    public int updateGrocery(GroceryListItem groceryItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME_GROCERIES, groceryItem.getRecipeName());
+
+        String ingedientsConcat = "";
+
+        if(groceryItem.getIngredients() != null) {
+            StringBuilder ingred = new StringBuilder();
+            for (String s : groceryItem.getIngredients()) {
+                ingred.append(s);
+                ingred.append("\t");
+            }
+            ingedientsConcat = ingred.toString();
+        }
+
+        values.put(KEY_INGREDIENTS_GROCERIES, ingedientsConcat);
+
+        return  db.update(TABLE_GROCERIES, values, KEY_ID_GROCERIES + " = ?",
+                new String[] { String.valueOf(groceryItem.getId()) });
+    }
+
 
     public void deleteRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -268,8 +363,6 @@ public class RecipeDB extends SQLiteOpenHelper {
                 new String[] { String.valueOf(recipe.getID()) });
         db.close();
     }
-
-
 
     public int getRecipeCount() {
         String countQuery = "SELECT  * FROM " + TABLE_RECIPES;
@@ -280,6 +373,7 @@ public class RecipeDB extends SQLiteOpenHelper {
         // return count
         return cursor.getCount();
     }
+
 
 
 
