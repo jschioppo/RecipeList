@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="#000000">
+    android:background="@color/white"
+    android:elevation="15dp">
 
     <TextView
         android:id="@+id/expandable_list_recipe_header"
@@ -14,6 +15,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textSize="17dp"
-        android:textColor="#f9f93d"/>
+        android:textColor="@color/black"/>
 
 </LinearLayout>

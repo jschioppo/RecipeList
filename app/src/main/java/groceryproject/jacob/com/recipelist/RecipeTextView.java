@@ -58,7 +58,7 @@ public class RecipeTextView extends AppCompatActivity {
 
         mServings = (TextView) findViewById(R.id.serving_text_view);
         if(passedRecipe.getServings() != null && passedRecipe.getServings() != "") {
-            mServings.setText(passedRecipe.getServings());
+            mServings.setText("Servings: " + passedRecipe.getServings());
         }
 
         mPrepTime = (TextView) findViewById(R.id.prep_time_text_view);
@@ -184,5 +184,7 @@ public class RecipeTextView extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Intent i = new Intent(RecipeTextView.this, RecipeList.class);
+        startActivity(i);
     }
 }

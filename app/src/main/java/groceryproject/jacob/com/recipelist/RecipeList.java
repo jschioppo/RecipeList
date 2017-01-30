@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class RecipeList extends AppCompatActivity{
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int REQUEST_CODE=1;
+    private Button mNavigateGroceryButton;
     RecipeDB dbHelper = new RecipeDB(this);
     List<Recipe> recipes;
 
@@ -39,6 +42,15 @@ public class RecipeList extends AppCompatActivity{
         mAdapter = new RecipeListAdapter(recipes);
         mRecyclerView.setAdapter(mAdapter);
 
+
+        mNavigateGroceryButton = (Button) findViewById(R.id.navigate_to_groceries_button_list_view);
+        mNavigateGroceryButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(RecipeList.this, ExpandableListViewActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

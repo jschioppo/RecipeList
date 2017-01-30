@@ -95,7 +95,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         String recipeName = recipe.getRecipeName();
         String prepTime = "Prep Time: " + String.valueOf(recipe.getPrepTime()) + " minutes";
         String cookTime = "Cook Time: " + String.valueOf(recipe.getCookTime()) + " minutes";
-        String servingSize = "Serves: " + String.valueOf(recipe.getServings());
+        String servingSize = "Servings: " + String.valueOf(recipe.getServings());
 
         holder.mRecipeName.setText(recipeName);
 

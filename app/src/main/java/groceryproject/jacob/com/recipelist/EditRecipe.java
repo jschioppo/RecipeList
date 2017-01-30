@@ -27,7 +27,6 @@ import java.util.List;
 //TODO: Edit the XML for the edit recipe activity to be consistent with the text view one
 //TODO: Go through comments to delete outdated info
 public class EditRecipe extends AppCompatActivity {
-    private final String TAG = "myApp";
     private EditText mRecipeName;
     private EditText mServings;
     private EditText mPrepTime;
@@ -37,8 +36,6 @@ public class EditRecipe extends AppCompatActivity {
     private EditText mCookTime;
     private int REQUEST_CODE = 1;
 
-    //These are declared here so that I can use them within each edit text listener, and then set them to the values
-    //of the recipe object when the save button is pushed.
 
     private String recipeName;
     private String prepTime;

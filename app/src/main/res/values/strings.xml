@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Smart Grocery List</string>
     <string name="recipe_name">Recipe Name:</string>
-    <string name="servings">Serves:</string>
+    <string name="servings">Servings:</string>
     <string name="prep_time">Prep Time:</string>
     <string name="save">Save</string>
     <string name="ingredients">Ingredients:</string>
