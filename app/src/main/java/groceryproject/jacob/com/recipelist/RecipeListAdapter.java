@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,18 +34,27 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         @Override
         public void onClick(View v){
             int position = getAdapterPosition();
-            Intent i = new Intent(v.getContext(), RecipeTextView.class);
-            Recipe selectedRecipe = mRecipeSet.get(position);
-            i.putExtra("view_recipe_key", selectedRecipe);
-            //Every view has a context, and to start the activity I must get that context
-            v.getContext().startActivity(i);
+            if(v.getId() == R.id.add_to_grocery_list){
+                Recipe recipeToGrocery = mRecipeSet.get(position);
+                GroceryListItem newListItem = new GroceryListItem(recipeToGrocery.getRecipeName(),
+                        recipeToGrocery.getIngredients());
+            }
+            else {
+                //int position = getAdapterPosition();
+                Intent i = new Intent(v.getContext(), RecipeTextView.class);
+                Recipe selectedRecipe = mRecipeSet.get(position);
+                i.putExtra("view_recipe_key", selectedRecipe);
+                //Every view has a context, and to start the activity I must get that context
+                v.getContext().startActivity(i);
+            }
         }
 
-        public TextView mRecipeName;
-        public TextView mPrepTime;
-        public TextView mCookTime;
-        public TextView mServingSize;
-        public RelativeLayout mRecipeTextSection;
+        private TextView mRecipeName;
+        private TextView mPrepTime;
+        private TextView mCookTime;
+        private TextView mServingSize;
+        private RelativeLayout mRecipeTextSection;
+        private Button mSaveButton;
 
 
         public ViewHolder(View v) {
@@ -56,6 +66,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             mRecipeTextSection = (RelativeLayout) v.findViewById(R.id.recycled_item_section_view);
 
             mRecipeTextSection.setOnClickListener(this);
+
+            mSaveButton = (Button) v.findViewById(R.id.add_to_grocery_list);
+
         }
 
     }
