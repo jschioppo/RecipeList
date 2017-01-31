@@ -17,6 +17,7 @@ public class ExpandableListViewActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    RecipeDB dbHelper = new RecipeDB(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,20 @@ public class ExpandableListViewActivity extends AppCompatActivity {
     private void prepareListData(){
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
+
+        List<GroceryListItem> groceries = new ArrayList<>();
+
+        groceries = dbHelper.getAllGroceries();
+
+        for(GroceryListItem grocery : groceries){
+
+            listDataChild.put(grocery.getRecipeName(), grocery.getIngredients());
+
+            //listDataHeader.add(grocery.getRecipeName());
+            //List<String> ingredients = grocery.getIngredients();
+        }
+
+
         /*
 
         listDataHeader.add("Top 250");
