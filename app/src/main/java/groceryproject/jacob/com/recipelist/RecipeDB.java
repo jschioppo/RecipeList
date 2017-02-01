@@ -19,7 +19,7 @@ public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // Database Name
     private static final String DATABASE_NAME = "recipeManager";
@@ -55,8 +55,8 @@ public class RecipeDB extends SQLiteOpenHelper {
                 + KEY_SERVINGS + " TEXT," + KEY_PREP_TIME + " TEXT, " + KEY_COOK_TIME + " TEXT,"
                 + KEY_INGREDIENTS + " TEXT," + KEY_DIRECTIONS + " TEXT, " + KEY_IN_LIST + " INTEGER" + ")";
 
-        String CREATE_GROCERIES_TABLE = "CREATE TABLE " + TABLE_GROCERIES + "{"
-                + KEY_ID_GROCERIES + " INTEGER PRIMERY KEY," + KEY_NAME_GROCERIES + " TEXT,"
+        String CREATE_GROCERIES_TABLE = "CREATE TABLE " + TABLE_GROCERIES + "("
+                + KEY_ID_GROCERIES + " INTEGER," + KEY_NAME_GROCERIES + " TEXT,"
                 + KEY_INGREDIENTS_GROCERIES + " TEXT" + ")";
 
         db.execSQL(CREATE_RECIPES_TABLE);
@@ -125,6 +125,7 @@ public class RecipeDB extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME_GROCERIES, newListItem.getRecipeName());
+        values.put(KEY_ID_GROCERIES, newListItem.getID());
 
         String ingedientsConcat = "";
 
@@ -140,11 +141,10 @@ public class RecipeDB extends SQLiteOpenHelper {
         values.put(KEY_INGREDIENTS_GROCERIES, ingedientsConcat);
 
         db.insert(TABLE_GROCERIES, null, values);
-
-
+        db.close();
     }
 
-
+    //TODO: Create another method getRecipe, overriding the parameters to look for a name instead, since name is now unique.
     Recipe getRecipe(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -199,17 +199,6 @@ public class RecipeDB extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Recipe recipe = new Recipe();
-
-                /*
-                Log.d("Name, ", "Index 0: " + cursor.getString(0));
-                Log.d("Name, ", "Index 1: " + cursor.getString(1));
-                Log.d("Name, ", "Index 2: " + cursor.getString(2));
-                Log.d("Name, ", "Index 3: " + cursor.getString(3));
-                Log.d("Name, ", "Index 4: " + cursor.getString(4));
-                Log.d("Name, ", "Index 5: " + cursor.getString(5));
-                Log.d("Name, ", "Index 6: " + cursor.getString(6));
-                Log.d("Name, ", "Index 7: " + cursor.getInt(7));
-                */
 
                 recipe.setID(Integer.parseInt(cursor.getString(0)));
                 recipe.setRecipeName(cursor.getString(1));
@@ -361,6 +350,19 @@ public class RecipeDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_RECIPES, KEY_ID + " = ?",
                 new String[] { String.valueOf(recipe.getID()) });
+        db.close();
+    }
+
+    public void deleteGrocery(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GROCERIES, KEY_NAME_GROCERIES + " = ?", new String[] {name});
+        db.close();
+    }
+
+    public void deleteGroceryItem(GroceryListItem listItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GROCERIES, KEY_ID_GROCERIES + " = ?",
+                new String[] { String.valueOf(listItem.getId()) });
         db.close();
     }
 

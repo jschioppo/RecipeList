@@ -33,6 +33,7 @@ public class EditRecipe extends AppCompatActivity {
     private EditText mIngredients;
     private EditText mDirections;
     private Button mSaveButton;
+    RecipeDB dbHelper = new RecipeDB(this);
     private EditText mCookTime;
     private int REQUEST_CODE = 1;
 
@@ -241,9 +242,17 @@ public class EditRecipe extends AppCompatActivity {
             case R.id.edit_recipe_action_bar_save_button:
                 //If statement to make sure the recipe name exists. Every other value can be empty
                 //if the user wishes
+                //As well as checking if the name already exists, to keep name as a unique value
                 if (TextUtils.isEmpty(recipeName)) {
                     mRecipeName.setError("Recipe name can not be empty.");
                     return false;
+                }
+                List<Recipe> recipes = dbHelper.getAllRecipes();
+                for(Recipe recipe: recipes){
+                    if (recipeName.equals(recipe.getRecipeName())){
+                        mRecipeName.setError("That recipe already exists.");
+                        return false;
+                    }
                 }
 
                 if (recipeName != null) {
