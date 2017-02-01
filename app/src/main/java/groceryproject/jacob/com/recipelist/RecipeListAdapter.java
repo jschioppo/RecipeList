@@ -10,16 +10,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder>{
 
     private List<Recipe> mRecipeSet;
+    private Button mSaveButton;
+
 
     public RecipeListAdapter(List<Recipe> recipes){
         mRecipeSet = recipes;
@@ -29,25 +33,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         //This is what will handle what happens when you click a recipe in the recycler view
-        @Override
-        public void onClick(View v){
-            int position = getAdapterPosition();
-            if(v.getId() == R.id.add_to_grocery_list){
-                Recipe recipeToGrocery = mRecipeSet.get(position);
-                GroceryListItem newListItem = new GroceryListItem(recipeToGrocery.getRecipeName(),
-                        recipeToGrocery.getIngredients());
-            }
-            else {
-                //int position = getAdapterPosition();
-                Intent i = new Intent(v.getContext(), RecipeTextView.class);
-                Recipe selectedRecipe = mRecipeSet.get(position);
-                i.putExtra("view_recipe_key", selectedRecipe);
-                //Every view has a context, and to start the activity I must get that context
-                v.getContext().startActivity(i);
-            }
-        }
+
 
         private TextView mRecipeName;
         private TextView mPrepTime;
@@ -68,6 +55,39 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             mRecipeTextSection.setOnClickListener(this);
 
             mSaveButton = (Button) v.findViewById(R.id.add_to_grocery_list);
+            mSaveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Recipe recipeToGrocery = mRecipeSet.get(position);
+
+                    RecipeDB dbHelper = new RecipeDB(v.getContext());
+
+                    dbHelper.addGroceryItem(recipeToGrocery);
+                    /*
+                    if(recipeToGrocery.isInList()) {
+                        RecipeDB dbHelper = new RecipeDB(v.getContext());
+
+                        dbHelper.addGroceryItem(recipeToGrocery);
+                    }
+                    else {
+                        Toast.makeText(v.getContext(), "That recipe is already in the list.", Toast.LENGTH_SHORT).show();
+                    }
+                    */
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View v){
+            int position = getAdapterPosition();
+            Intent i = new Intent(v.getContext(), RecipeTextView.class);
+            Recipe selectedRecipe = mRecipeSet.get(position);
+            i.putExtra("view_recipe_key", selectedRecipe);
+            //Every view has a context, and to start the activity I must get that context
+            v.getContext().startActivity(i);
+            //Log.d("myApp", "Added to database");
 
         }
 
