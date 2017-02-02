@@ -48,7 +48,7 @@ public class RecipeList extends AppCompatActivity{
             @Override
             public void onClick(View v){
                 Intent i = new Intent(RecipeList.this, ExpandableListViewActivity.class);
-                Log.d("Navigate", "navigate pressed" );
+                //Log.d("Navigate", "navigate pressed" );
                 startActivity(i);
             }
         });
