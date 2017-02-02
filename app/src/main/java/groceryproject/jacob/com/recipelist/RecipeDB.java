@@ -19,7 +19,7 @@ public class RecipeDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // Database Name
     private static final String DATABASE_NAME = "recipeManager";
@@ -186,6 +186,51 @@ public class RecipeDB extends SQLiteOpenHelper {
                 cursor.getString(3), cursor.getString(4), ingredientsList, directionsList, inList);
         return recipe;
     }
+
+    Recipe getRecipe(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_RECIPES, new String[] { KEY_ID,
+                        KEY_NAME, KEY_SERVINGS, KEY_PREP_TIME, KEY_COOK_TIME, KEY_INGREDIENTS, KEY_DIRECTIONS, KEY_IN_LIST },
+                KEY_NAME + "=?", new String[] { name }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        List<String> directionsList = new ArrayList<>();
+        List<String> ingredientsList = new ArrayList<>();
+
+        String ingredients = cursor.getString(5);
+        String directions = cursor.getString(6);
+
+
+        if (directions != null){
+            if(directions.contains("\t")) {
+                directionsList = Arrays.asList(directions.split("\t"));
+            }
+            else{
+                directionsList = Arrays.asList(directions);
+            }
+        }
+
+        if (ingredients != null){
+            if(ingredients.contains("\t")) {
+                ingredientsList = Arrays.asList(ingredients.split("\t"));
+            }
+            else{
+                ingredientsList = Arrays.asList(ingredients);
+            }
+        }
+
+        int flag = cursor.getInt(7);
+        boolean inList = (flag != 0);
+
+        Recipe recipe = new Recipe(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),
+                cursor.getString(3), cursor.getString(4), ingredientsList, directionsList, inList);
+        return recipe;
+    }
+
+
+    
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipeList = new ArrayList<>();
@@ -355,6 +400,11 @@ public class RecipeDB extends SQLiteOpenHelper {
 
     public void deleteGrocery(String name){
         SQLiteDatabase db = this.getWritableDatabase();
+
+        Recipe recipe = getRecipe(name);
+        recipe.setInList(false);
+        updateRecipe(recipe);
+
         db.delete(TABLE_GROCERIES, KEY_NAME_GROCERIES + " = ?", new String[] {name});
         db.close();
     }
