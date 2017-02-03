@@ -16,6 +16,7 @@ import android.widget.Toast;
 public class ExpandableListViewActivity extends AppCompatActivity {
 
     ExpandableIngredientListAdapter listAdapter;
+
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
@@ -60,7 +61,6 @@ public class ExpandableListViewActivity extends AppCompatActivity {
         });
 
     }
-
 
 
     private void prepareListData(){

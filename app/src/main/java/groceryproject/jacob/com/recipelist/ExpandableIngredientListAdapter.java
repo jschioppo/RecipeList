@@ -25,7 +25,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
+
     private HashMap<String, List<String>> _listDataChild;
     private Button mDeleteButton;
 
@@ -82,13 +82,11 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
         return groupPosition;
     }
 
-    //TODO: Delete is working, just need to find a way to change the boolean isInList to false for the specified recipe
-    //NOTE: This is done with a grocery, so the names will need to be compared. Name is now a unique field
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_group, null);
 
             mDeleteButton = (Button) convertView.findViewById(R.id.delete_recipe_from_grocery_list_button);
@@ -102,6 +100,10 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
                     RecipeDB dbHelper = new RecipeDB(parent.getContext());
                     dbHelper.deleteGrocery(groceryName);
 
+                    //**************************************************************************************
+                    //Creating a new intent works, but I know this solution probably isn't the best practice
+                    //I would like to figure out a way to call notifydatasetchanged from here.
+                    //**************************************************************************************
 
                     //Intent i = new Intent(_context, ExpandableListViewActivity.class);
                     //_context.startActivity(i);
