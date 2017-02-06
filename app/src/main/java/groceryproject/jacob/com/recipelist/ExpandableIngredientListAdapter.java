@@ -23,21 +23,21 @@ import java.util.List;
 
 public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private Context mContext;
+    private List<String> recipeNames; // header titles
+    private HashMap<String, List<String>> recipeIngredients;
     private Button mDeleteButton;
 
+    //I believe that the key in doing an adapter change is in getting rid of these parameters and finding a way to populate the list purely from my database.
     public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this.mContext = context;
+        this.recipeNames = listDataHeader;
+        this.recipeIngredients = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon);
+        return this.recipeIngredients.get(this.recipeNames.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_item, null);
         }
 
@@ -64,17 +64,17 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        return this.recipeIngredients.get(this.recipeNames.get(groupPosition)).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.recipeNames.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.recipeNames.size();
     }
 
     @Override
@@ -82,13 +82,11 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
         return groupPosition;
     }
 
-    //TODO: Delete is working, just need to find a way to change the boolean isInList to false for the specified recipe
-    //NOTE: This is done with a grocery, so the names will need to be compared. Name is now a unique field
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_group, null);
 
             mDeleteButton = (Button) convertView.findViewById(R.id.delete_recipe_from_grocery_list_button);
@@ -98,10 +96,18 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
                 @Override
                 public void onClick(View v) {
                     int parentPosition = groupPosition;
-                    String groceryName = _listDataHeader.get(groupPosition);
+                    String groceryName = recipeNames.get(groupPosition);
                     RecipeDB dbHelper = new RecipeDB(parent.getContext());
                     dbHelper.deleteGrocery(groceryName);
 
+                    //Below statement should work if I remove the parameters
+                    //ExpandableIngredientListAdapter mAdapter = new ExpandableIngredientListAdapter();
+                    //mAdapter.notifyDataSetChanged();
+
+                    //**************************************************************************************
+                    //Creating a new intent works, but I know this solution probably isn't the best practice
+                    //I would like to figure out a way to call notifydatasetchanged from here.
+                    //**************************************************************************************
 
                     //Intent i = new Intent(_context, ExpandableListViewActivity.class);
                     //_context.startActivity(i);
