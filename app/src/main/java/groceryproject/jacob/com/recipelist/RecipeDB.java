@@ -144,7 +144,6 @@ public class RecipeDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    //TODO: Create another method getRecipe, overriding the parameters to look for a name instead, since name is now unique.
     Recipe getRecipe(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -361,6 +360,11 @@ public class RecipeDB extends SQLiteOpenHelper {
 
         values.put(KEY_INGREDIENTS, ingedientsConcat);
         values.put(KEY_DIRECTIONS, directionsConcat);
+
+        boolean inList = recipe.isInList();
+        int flag = (inList) ? 1: 0;
+
+        values.put(KEY_IN_LIST, flag);
 
         // updating row
         return db.update(TABLE_RECIPES, values, KEY_ID + " = ?",

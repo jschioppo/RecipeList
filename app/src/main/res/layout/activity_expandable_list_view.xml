@@ -9,7 +9,41 @@
     <ExpandableListView
         android:id="@+id/expandable_list_base_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:elevation="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_buttons_text_view"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/white"
+        >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recipes"
+            android:id="@+id/navigate_to_recipes_button_expanded_view"
+            android:enabled="true"
+            android:layout_weight="1"
+            android:background="@color/brightGray"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grocery List"
+            android:id="@+id/navigate_to_groceries_button_expanded_view"
+            android:layout_weight="1"
+            android:background="@drawable/background_border"
+            android:enabled="false"/>
+
+    </LinearLayout>
+
+
 
 
 
