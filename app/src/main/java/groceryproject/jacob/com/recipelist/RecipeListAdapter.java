@@ -22,7 +22,6 @@ import android.widget.Toast;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder>{
 
     private List<Recipe> mRecipeSet;
-    private Button mSaveButton;
 
 
     public RecipeListAdapter(List<Recipe> recipes){
@@ -41,7 +40,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         private TextView mCookTime;
         private TextView mServingSize;
         private RelativeLayout mRecipeTextSection;
-        private Button mSaveButton;
+        private Button mAddToGroceriesButton;
+
 
 
         public ViewHolder(View v) {
@@ -54,26 +54,30 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
             mRecipeTextSection.setOnClickListener(this);
 
-            mSaveButton = (Button) v.findViewById(R.id.add_to_grocery_list);
-            mSaveButton.setOnClickListener(new View.OnClickListener() {
+            mAddToGroceriesButton = (Button) v.findViewById(R.id.add_to_grocery_list);
+            mAddToGroceriesButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     Recipe recipeToGrocery = mRecipeSet.get(position);
 
-                    RecipeDB dbHelper = new RecipeDB(v.getContext());
+                    //RecipeDB dbHelper = new RecipeDB(v.getContext());
+                    //dbHelper.addGroceryItem(recipeToGrocery);
 
-                    dbHelper.addGroceryItem(recipeToGrocery);
-                    /*
-                    if(recipeToGrocery.isInList()) {
+                    if(!recipeToGrocery.isInList()) {
                         RecipeDB dbHelper = new RecipeDB(v.getContext());
-
                         dbHelper.addGroceryItem(recipeToGrocery);
+
+                        recipeToGrocery.setInList(true);
+                        dbHelper.updateRecipe(recipeToGrocery);
+
+                        mAddToGroceriesButton.setBackgroundResource(R.mipmap.ic_playlist_add_check_black_24dp);
+                        Toast.makeText(v.getContext(), recipeToGrocery.getRecipeName() + " added to grocery list.", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(v.getContext(), "That recipe is already in the list.", Toast.LENGTH_SHORT).show();
                     }
-                    */
+
                 }
             });
 
@@ -85,10 +89,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             Intent i = new Intent(v.getContext(), RecipeTextView.class);
             Recipe selectedRecipe = mRecipeSet.get(position);
             i.putExtra("view_recipe_key", selectedRecipe);
-            //Every view has a context, and to start the activity I must get that context
             v.getContext().startActivity(i);
-            //Log.d("myApp", "Added to database");
-
         }
 
     }
@@ -141,6 +142,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         }
         if(recipe.getCookTime() != null) {
             holder.mCookTime.setText(cookTime);
+        }
+
+        if(recipe.isInList()){
+            holder.mAddToGroceriesButton.setBackgroundResource(R.mipmap.ic_playlist_add_check_black_24dp);
         }
 
 

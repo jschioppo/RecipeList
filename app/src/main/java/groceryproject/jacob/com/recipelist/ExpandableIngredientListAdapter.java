@@ -27,6 +27,8 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     private List<String> recipeNames; // header titles
     private HashMap<String, List<String>> recipeIngredients;
     private Button mDeleteButton;
+    private List<GroceryListItem> mGrocerySet;
+
 
     //I believe that the key in doing an adapter change is in getting rid of these parameters and finding a way to populate the list purely from my database.
     public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
@@ -48,13 +50,13 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
+        //Changed from groupPosition to groupPosition - 1
         final String childText = (String) getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
+
             LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_item, null);
-        }
+
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.expandable_list_recipe_ingredient_item);
 
@@ -83,37 +85,40 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
+    public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
+
             final LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.expandable_list_view_group, null);
 
             mDeleteButton = (Button) convertView.findViewById(R.id.delete_recipe_from_grocery_list_button);
             //TODO: Add a dialog to ensure user wants to delete the recipe
-            //TODO: Instead of using intent, try to delete the item from the array list, then call prepareListData.
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int parentPosition = groupPosition;
-                    String groceryName = recipeNames.get(groupPosition);
                     RecipeDB dbHelper = new RecipeDB(parent.getContext());
-                    dbHelper.deleteGrocery(groceryName);
+                    String groceryName = recipeNames.get(groupPosition);
+                    recipeNames.remove(groupPosition);
+                    recipeIngredients.remove(groupPosition);
 
-                    //Below statement should work if I remove the parameters
-                    //ExpandableIngredientListAdapter mAdapter = new ExpandableIngredientListAdapter();
-                    //mAdapter.notifyDataSetChanged();
+                    Recipe grabRecipe = dbHelper.getRecipe(groceryName);
+                    grabRecipe.setInList(false);
+                    dbHelper.updateRecipe(grabRecipe);
+
+                    dbHelper.deleteGrocery(groceryName);
+                    notifyDataSetChanged();
+
 
                     //**************************************************************************************
                     //Creating a new intent works, but I know this solution probably isn't the best practice
                     //I would like to figure out a way to call notifydatasetchanged from here.
                     //**************************************************************************************
 
-                    //Intent i = new Intent(_context, ExpandableListViewActivity.class);
-                    //_context.startActivity(i);
+                    //Intent i = new Intent(mContext, ExpandableListViewActivity.class);
+                    //mContext.startActivity(i);
                 }
             });
-        }
+
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.expandable_list_recipe_header);
         lblListHeader.setTypeface(null, Typeface.BOLD);
@@ -123,6 +128,8 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
         return convertView;
     }
+
+
 
     @Override
     public boolean hasStableIds() {

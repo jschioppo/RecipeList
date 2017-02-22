@@ -1,6 +1,8 @@
 package groceryproject.jacob.com.recipelist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class ExpandableListViewActivity extends AppCompatActivity {
@@ -25,8 +28,7 @@ public class ExpandableListViewActivity extends AppCompatActivity {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     RecipeDB dbHelper = new RecipeDB(this);
-    private ArrayList<GroceryListItem> groceries;
-    private Context mContext;
+    private Button mNavigateRecipesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +43,30 @@ public class ExpandableListViewActivity extends AppCompatActivity {
 
         expListView.setAdapter(listAdapter);
 
+
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
+            //TODO: Add checkboxes instead of colors
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                //v.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.green));
+
+                //findViewById(R.id.expandable_list_recipe_ingredient_item).setSelected(true);
+
+                //int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+                //parent.setItemChecked(1, true);
+                //parent.setActivated(true);
+                //expListView.setActivated(true);
                 return false;
             }
         });
+
 
 
         // Listview Group expanded listener
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
+                prepareListData();
             }
         });
 
@@ -60,15 +74,22 @@ public class ExpandableListViewActivity extends AppCompatActivity {
         expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-
+                prepareListData();
 
             }
         });
 
+        mNavigateRecipesButton = (Button) findViewById(R.id.navigate_to_recipes_button_expanded_view);
+        mNavigateRecipesButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(ExpandableListViewActivity.this, RecipeList.class);
+                startActivity(i);
+            }
+        });
+
     }
-
-
-    private void prepareListData(){
+    public void prepareListData(){
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         int i = 0;
@@ -84,42 +105,12 @@ public class ExpandableListViewActivity extends AppCompatActivity {
 
     }
 
-    /*
-    private class ExpandableListAdapter extends BaseExpandableListAdapter{
-
-        private LayoutInflater inflater;
-
-        public ExpandableListAdapter(){
-            inflater = LayoutInflater.from(ExpandableListViewActivity.this);
-        }
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded,
-                                 View convertView, ViewGroup parentView){
-
-            final GroceryListItem grocery = groceries.get(groupPosition);
-
-            convertView = inflater.inflate(R.layout.expandable_list_view_group, parentView, false);
-
-            return convertView;
-
-        }
-
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                                 View convertView, ViewGroup parentView){
-
-            final GroceryListItem grocery = groceries.get(groupPosition);
-            final List<String> ingredients = grocery.getIngredients();
-
-            convertView = inflater.inflate(R.layout.expandable_list_view_item, parentView, false);
-
-
-
-        }
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ExpandableListViewActivity.this, RecipeList.class);
+        startActivity(i);
     }
-    */
+
+
+
 }
