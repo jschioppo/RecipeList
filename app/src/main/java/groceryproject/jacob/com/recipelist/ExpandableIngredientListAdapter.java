@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jacob on 1/12/2017.
@@ -28,6 +32,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     private HashMap<String, List<String>> recipeIngredients;
     private Button mDeleteButton;
     private List<GroceryListItem> mGrocerySet;
+    private final Set<Pair<Long, Long>> mCheckedItems = new HashSet<Pair<Long, Long>>();
 
 
     //I believe that the key in doing an adapter change is in getting rid of these parameters and finding a way to populate the list purely from my database.
@@ -50,17 +55,42 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        //Changed from groupPosition to groupPosition - 1
+
         final String childText = (String) getChild(groupPosition, childPosition);
 
-
-            LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.expandable_list_view_item, null);
-
+        LayoutInflater infalInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = infalInflater.inflate(R.layout.expandable_list_view_item, null);
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.expandable_list_recipe_ingredient_item);
 
         txtListChild.setText(childText);
+
+        /************************************************************************************************************/
+
+        final CheckBox cb = (CheckBox) convertView.findViewById(R.id.expandable_list_view_itemm_check_box);
+        // add tag to remember groupId/childId
+        final Pair<Long, Long> tag = new Pair<Long, Long>(
+                getGroupId(groupPosition),
+                getChildId(groupPosition, childPosition));
+        cb.setTag(tag);
+        // set checked if groupId/childId in checked items
+        cb.setChecked(mCheckedItems.contains(tag));
+        // set OnClickListener to handle checked switches
+        cb.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                final CheckBox cb = (CheckBox) v;
+                final Pair<Long, Long> tag = (Pair<Long, Long>) v.getTag();
+                if (cb.isChecked()) {
+                    mCheckedItems.add(tag);
+                } else {
+                    mCheckedItems.remove(tag);
+                }
+            }
+        });
+
+        /************************************************************************************************************/
+
         return convertView;
     }
 
@@ -140,4 +170,6 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    
 }

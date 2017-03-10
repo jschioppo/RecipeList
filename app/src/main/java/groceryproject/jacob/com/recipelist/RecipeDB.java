@@ -402,6 +402,7 @@ public class RecipeDB extends SQLiteOpenHelper {
         db.close();
     }
 
+
     public void deleteGrocery(String name){
         SQLiteDatabase db = this.getWritableDatabase();
 
