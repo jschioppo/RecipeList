@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:groceryproject="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/grocery_list_delete_all_groceries_actionbar_button"
+        android:title="Add"
+        android:orderInCategory="100"
+        groceryproject:showAsAction="always"
+        android:icon="@mipmap/ic_delete_sweep_black_24dp"
+        />
+
+    <item
+        android:id="@+id/grocery_list_export_to_pdf_button"
+        android:title="Download"
+        android:orderInCategory="50"
+        groceryproject:showAsAction="always"
+        android:icon="@mipmap/ic_file_download_black_24dp"
+        />
+</menu>

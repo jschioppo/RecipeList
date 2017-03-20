@@ -65,17 +65,22 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
                     //dbHelper.addGroceryItem(recipeToGrocery);
 
                     if(!recipeToGrocery.isInList()) {
-                        RecipeDB dbHelper = new RecipeDB(v.getContext());
-                        dbHelper.addGroceryItem(recipeToGrocery);
+                        if(recipeToGrocery.getIngredients().size() == 0){
+                            Toast.makeText(v.getContext(), recipeToGrocery.getRecipeName() + " has no ingredients.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            RecipeDB dbHelper = new RecipeDB(v.getContext());
+                            dbHelper.addGroceryItem(recipeToGrocery);
 
-                        recipeToGrocery.setInList(true);
-                        dbHelper.updateRecipe(recipeToGrocery);
+                            recipeToGrocery.setInList(true);
+                            dbHelper.updateRecipe(recipeToGrocery);
 
-                        mAddToGroceriesButton.setBackgroundResource(R.mipmap.ic_playlist_add_check_black_24dp);
-                        Toast.makeText(v.getContext(), recipeToGrocery.getRecipeName() + " added to grocery list.", Toast.LENGTH_SHORT).show();
+                            mAddToGroceriesButton.setBackgroundResource(R.mipmap.ic_playlist_add_check_black_24dp);
+                            Toast.makeText(v.getContext(), recipeToGrocery.getRecipeName() + " added to grocery list.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else {
-                        Toast.makeText(v.getContext(), "That recipe is already in the list.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), recipeToGrocery.getRecipeName() + " is already in the list.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -127,8 +132,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe recipe = mRecipeSet.get(position);
         String recipeName = recipe.getRecipeName();
-        String prepTime = "Prep Time: " + String.valueOf(recipe.getPrepTime()) + " minutes";
-        String cookTime = "Cook Time: " + String.valueOf(recipe.getCookTime()) + " minutes";
+        String prepTime = "Prep: " + String.valueOf(recipe.getPrepTime()) + " min";
+        String cookTime = "Cook: " + String.valueOf(recipe.getCookTime()) + " min";
         String servingSize = "Servings: " + String.valueOf(recipe.getServings());
 
         holder.mRecipeName.setText(recipeName);

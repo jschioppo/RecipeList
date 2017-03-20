@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:layout_margin="7dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:paddingLeft="10dp"
     android:id="@+id/recycled_item_section_view"
     android:elevation="30dp"
-    android:background="@drawable/background_border"
+    android:background="@drawable/background_border_blue"
     >
 
 
     <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Recipe name"
         android:textSize="24dp"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:id="@+id/recipe_list_recycler_view_recipe_name"
         android:paddingBottom="3dp"
@@ -29,9 +31,11 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:textColor="@color/black"
-        android:layout_below="@id/recipe_list_recycler_view_recipe_name"
         android:id="@+id/recipe_list_recycler_view_serving_size"
-        android:paddingBottom="3dp"/>
+        android:layout_marginBottom="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        />
 
     <Button
         android:layout_width="35dp"
@@ -48,7 +52,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recipe_list_recycler_view_serving_size"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:textSize="18dp"
         android:textColor="@color/black"
@@ -59,11 +63,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recipe_list_recycler_view_prep_time"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:textSize="18dp"
         android:textColor="@color/black"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/recipe_list_recycler_view_cook_time"/>
+        android:id="@+id/recipe_list_recycler_view_cook_time"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="3dp"/>
 
 
 </RelativeLayout>

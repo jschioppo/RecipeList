@@ -414,6 +414,13 @@ public class RecipeDB extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteAllGroceries(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_GROCERIES, null, null);
+        db.close();
+    }
+
     public void deleteGroceryItem(GroceryListItem listItem){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_GROCERIES, KEY_ID_GROCERIES + " = ?",

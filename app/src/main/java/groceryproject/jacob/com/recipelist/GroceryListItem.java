@@ -11,11 +11,13 @@ public class GroceryListItem {
     private int mId;
     private String recipeName;
     private List<String> ingredients;
+    private boolean[] isChecked;
 
     public GroceryListItem(int id, String name, List<String> ingredients){
         this.mId = id;
         this.recipeName = name;
         this.ingredients = ingredients;
+        isChecked = new boolean[ingredients.size()];
     }
 
     public GroceryListItem(String name, List<String> ingredients){
@@ -37,5 +39,13 @@ public class GroceryListItem {
 
     public List<String> getIngredients() {
         return ingredients;
+    }
+
+    public void setArrayIndexTrue(int index){
+        isChecked[index] = true;
+    }
+
+    public boolean[] returnCheckedItems(){
+        return isChecked;
     }
 }

@@ -26,6 +26,7 @@ public class RecipeTextView extends AppCompatActivity {
     private TextView mIngredients;
     private Button mEditButton;
     private Button mNavigateRecipesButton;
+    private Button mNavigateGroceryButton;
     private Button mDeleteButton;
     private int REQUEST_CODE = 1;
     RecipeDB dbHelper = new RecipeDB(this);
@@ -79,10 +80,19 @@ public class RecipeTextView extends AppCompatActivity {
         String ingredientsConcat = "";
 
         for(int i = 0; i < ingredientsSize; i++){
-            ingredientsConcat += "\u2022 " + ingredientsList.get(i) + "\n";
+            if(i < ingredientsSize - 1){
+                ingredientsConcat += "\u2022 " + ingredientsList.get(i) + "\n";
+            }
+            else{
+                ingredientsConcat += "\u2022 " + ingredientsList.get(i);
+            }
+
         }
         mIngredients = (TextView) findViewById(R.id.ingredients_text_view);
-        if(ingredientsConcat.equals("\u2022 " + "\n") == false) {
+        if(ingredientsConcat.equals("\u2022 " + "\n") == false && ingredientsConcat.equals("\u2022 ") == false
+                && ingredientsConcat.equals("\u2022") == false && ingredientsConcat.equals("") == false
+                && ingredientsConcat.equals("\n") == false && ingredientsConcat.equals(" ") == false){
+
             mIngredients.setText(ingredientsConcat);
         }
 
@@ -94,10 +104,19 @@ public class RecipeTextView extends AppCompatActivity {
         String directionsConcat = "";
 
         for(int i = 0; i < directionsSize; i++){
-            directionsConcat += (i + 1) + ". " + directionsList.get(i) + "\n";
+            //directionsConcat += (i + 1) + ". " + directionsList.get(i) + "\n";
+            if(i < directionsSize - 1){
+                directionsConcat += (i + 1) + ". " + directionsList.get(i) + "\n";
+            }
+            else{
+                directionsConcat += (i + 1) + ". " + directionsList.get(i);
+            }
         }
         mDirections = (TextView) findViewById(R.id.directions_text_view);
-        if(directionsConcat.equals("1. \n") == false) {
+        if(directionsConcat.equals("1. " + "\n") == false && directionsConcat.equals("1. ") == false
+                && directionsConcat.equals("1.") == false && directionsConcat.equals("") == false
+                && directionsConcat.equals("\n") == false && directionsConcat.equals(" ") == false) {
+
             mDirections.setText(directionsConcat);
         }
 
@@ -122,6 +141,16 @@ public class RecipeTextView extends AppCompatActivity {
             }
         });
 
+        mNavigateGroceryButton = (Button) findViewById(R.id.navigate_to_groceries_button_text_view);
+        mNavigateGroceryButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(RecipeTextView.this, ExpandableListViewActivity.class);
+                //Log.d("Navigate", "navigate pressed" );
+                startActivity(i);
+            }
+        });
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
@@ -134,6 +163,7 @@ public class RecipeTextView extends AppCompatActivity {
                 builder.setPositiveButton("I'm sure", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dbHelper.deleteGrocery(selectedRecipe.getRecipeName());
                         dbHelper.deleteRecipe(selectedRecipe);
                         Intent p = new Intent(RecipeTextView.this, RecipeList.class);
                         startActivity(p);
@@ -166,6 +196,14 @@ public class RecipeTextView extends AppCompatActivity {
 
                 RecipeDB dbHelper = new RecipeDB(this);
                 dbHelper.updateRecipe(editedRecipe);
+
+
+
+                if(editedRecipe.isInList()){
+                    GroceryListItem groceryItem = new GroceryListItem(editedRecipe.getID(), editedRecipe.getRecipeName(),
+                            editedRecipe.getIngredients());
+                    dbHelper.updateGrocery(groceryItem);
+                }
 
                 selectedRecipe = editedRecipe;
                 this.loadActivity(editedRecipe);
