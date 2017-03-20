@@ -24,8 +24,7 @@ import java.util.List;
 
 //This class is used to edit a recipe. Editing includes both creating a new recipe and editing an existing one
 //The edit and create button are in RecipeTextView (Edit) and RecipeList (Create)
-//TODO: Edit the XML for the edit recipe activity to be consistent with the text view one
-//TODO: Go through comments to delete outdated info
+
 public class EditRecipe extends AppCompatActivity {
     private EditText mRecipeName;
     private EditText mServings;
@@ -45,6 +44,7 @@ public class EditRecipe extends AppCompatActivity {
     //For directions and ingredients, we will seperate these into a list of strings by \n (new line).
     private String directions;
     private String ingredients;
+    private boolean exists = false;
     Recipe passedRecipe = new Recipe();
 
 
@@ -69,6 +69,7 @@ public class EditRecipe extends AppCompatActivity {
         if(passedRecipe.getRecipeName() != null){
             mRecipeName.setText(passedRecipe.getRecipeName(), TextView.BufferType.EDITABLE);
             recipeName = passedRecipe.getRecipeName();
+            exists = true;
         }
         else{
             passedRecipe.setInList(false);
@@ -249,7 +250,7 @@ public class EditRecipe extends AppCompatActivity {
                 }
                 List<Recipe> recipes = dbHelper.getAllRecipes();
                 for(Recipe recipe: recipes){
-                    if (recipeName.equals(recipe.getRecipeName())){
+                    if (recipeName.equals(recipe.getRecipeName()) && exists == false){
                         mRecipeName.setError("That recipe already exists.");
                         return false;
                     }
@@ -276,7 +277,6 @@ public class EditRecipe extends AppCompatActivity {
                 else {
                     passedRecipe.setServingSize(null);
                 }
-
 
                 List<String> directionsList = new ArrayList<>();
                 List<String> ingredientsList = new ArrayList<>();

@@ -2,9 +2,13 @@ package groceryproject.jacob.com.recipelist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,15 @@ import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,15 +44,48 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     private List<String> recipeNames; // header titles
     private HashMap<String, List<String>> recipeIngredients;
     private Button mDeleteButton;
-    private List<GroceryListItem> mGrocerySet;
-    private final Set<Pair<Long, Long>> mCheckedItems = new HashSet<Pair<Long, Long>>();
+    private static int[][] checkState;
+    //private SharedPreferences.Editor mEditPrefs;
+    //private SharedPreferences mPreferences;
+    private int totalLength;
+    private static final char NEXT_ITEM = ' ';
 
 
-    //I believe that the key in doing an adapter change is in getting rid of these parameters and finding a way to populate the list purely from my database.
-    public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
+    public ExpandableIngredientListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData){
         this.mContext = context;
         this.recipeNames = listDataHeader;
         this.recipeIngredients = listChildData;
+
+        int[] lengths = new int[recipeNames.size()];
+        //Log.d("Tag", Integer.toString(recipeNames.size()));
+
+        for(int i = 0; i <  recipeNames.size(); i++){
+            lengths[i] = recipeIngredients.get(recipeNames.get(i)).size();
+            //Log.d("Tag", "Index " + i + ": " + Integer.toString(recipeIngredients.get(recipeNames.get(i)).size()));
+            totalLength += lengths[i];
+        }
+
+        try{
+            checkState = getCheckState();
+        }
+        catch (Exception e){
+            if(checkState == null){
+                checkState = new int[recipeNames.size()][totalLength];
+            }
+            else{
+                int [][] checkstateOld = checkState;
+                checkState = new int[recipeNames.size()][totalLength];
+                for(int i = 0; i < checkstateOld.length; i++){
+                    for(int n = 0; n < checkstateOld[i].length; n++){
+                        if (checkstateOld[i][n] == 1){
+                            checkState[i][n] = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -53,7 +99,7 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
+    public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
@@ -65,33 +111,107 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
         txtListChild.setText(childText);
 
-        /************************************************************************************************************/
 
-        final CheckBox cb = (CheckBox) convertView.findViewById(R.id.expandable_list_view_itemm_check_box);
-        // add tag to remember groupId/childId
-        final Pair<Long, Long> tag = new Pair<Long, Long>(
-                getGroupId(groupPosition),
-                getChildId(groupPosition, childPosition));
-        cb.setTag(tag);
-        // set checked if groupId/childId in checked items
-        cb.setChecked(mCheckedItems.contains(tag));
-        // set OnClickListener to handle checked switches
-        cb.setOnClickListener(new View.OnClickListener() {
 
+        final CheckBox ingredientCheck = (CheckBox) convertView.findViewById(R.id.expandable_list_view_itemm_check_box);
+        ingredientCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                final CheckBox cb = (CheckBox) v;
-                final Pair<Long, Long> tag = (Pair<Long, Long>) v.getTag();
-                if (cb.isChecked()) {
-                    mCheckedItems.add(tag);
-                } else {
-                    mCheckedItems.remove(tag);
+                if (!ingredientCheck.isChecked()) {
+                    checkState[groupPosition][childPosition] = 0;
                 }
+                else {
+                    //Log.d("Tag", Integer.toString(groupPosition) + " , " + Integer.toString(childPosition));
+                    checkState[groupPosition][childPosition] = 1;
+                }
+
+                setCheckState(checkState);
             }
         });
 
-        /************************************************************************************************************/
+
+        if(checkState[groupPosition][childPosition] == 1){
+            ingredientCheck.setChecked(true);
+        }
 
         return convertView;
+    }
+
+
+    public void setCheckState(int [][] s){
+        String str = serialize(s);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("boolList", str);
+        editor.clear();
+        editor.apply();
+
+        Log.d("Tag", "Life: ");
+        for(int i = 0; i < recipeNames.size(); i++){
+            for(int n = 0; n < recipeIngredients.get(recipeNames.get(i)).size(); n++){
+                Log.d("Tag", String.valueOf(s[i][n]));
+            }
+        }
+    }
+
+    public int[][] getCheckState() throws IOException{
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String str = prefs.getString("boolList", "");
+        int [][] s = deserialize(str);
+
+        Log.d("Tag", "Death: ");
+        for(int i = 0; i < recipeNames.size(); i++){
+            for(int n = 0; n < recipeIngredients.get(recipeNames.get(i)).size(); n++){
+                Log.d("Tag", String.valueOf(s[i][n]));
+            }
+        }
+
+        return s;
+
+
+    }
+
+    private static String serialize(int[][] array) {
+        StringBuilder s = new StringBuilder();
+        s.append(array.length).append(NEXT_ITEM);
+
+        for(int[] row : array) {
+            s.append(row.length).append(NEXT_ITEM);
+
+            for(int item : row) {
+                s.append(String.valueOf(item)).append(NEXT_ITEM);
+            }
+        }
+
+        return s.toString();
+    }
+
+    private static int[][] deserialize(String str) throws IOException {
+        StreamTokenizer tok = new StreamTokenizer(new StringReader(str));
+        tok.resetSyntax();
+        tok.wordChars('0', '1');
+        tok.whitespaceChars(NEXT_ITEM, NEXT_ITEM);
+        tok.parseNumbers();
+
+        tok.nextToken();
+
+        int     rows = (int) tok.nval;
+        int[][] out  = new int[rows][];
+
+        for(int i = 0; i < rows; i++) {
+            tok.nextToken();
+
+            int   length = (int) tok.nval;
+            int[] row    = new int[length];
+            out[i]       = row;
+
+            for(int j = 0; j < length; j++) {
+                tok.nextToken();
+                row[j] = (int) tok.nval;
+            }
+        }
+
+        return out;
     }
 
     @Override
@@ -135,7 +255,13 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
                     grabRecipe.setInList(false);
                     dbHelper.updateRecipe(grabRecipe);
 
+                    //for(int i = 0; i < checkState[groupPosition].length; i++){
+                        //checkState[groupPosition][i] = 0;
+                    //}
+
                     dbHelper.deleteGrocery(groceryName);
+                    adjustArray(groupPosition);
+                    setCheckState(checkState);
                     notifyDataSetChanged();
 
 
@@ -157,6 +283,13 @@ public class ExpandableIngredientListAdapter extends BaseExpandableListAdapter{
 
 
         return convertView;
+    }
+
+
+    public void adjustArray(int index){
+        List<int[]> boolList = new ArrayList<int[]>(Arrays.asList(checkState));
+        boolList.remove(index);
+        checkState = boolList.toArray(new int[][]{});
     }
 
 
