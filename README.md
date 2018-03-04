@@ -17,6 +17,6 @@ Link: https://play.google.com/store/apps/details?id=groceryproject.jacob.com.rec
 
 Android Studio, Java, XML, SQLite
 
-##Acknowledgments
+## Acknowledgments
 
 The [Big Ranch Guide's Android Programming](https://www.amazon.com/Android-Programming-Ranch-Guide-Guides/dp/0134706056/ref=sr_1_1?ie=UTF8&qid=1520138697&sr=8-1&keywords=big+nerd+ranch+android+programming&dpID=412puBdQscL&preST=_SY291_BO1,204,203,200_QL40_&dpSrc=srch) book helped immensely in getting me started with Android mobile development.
